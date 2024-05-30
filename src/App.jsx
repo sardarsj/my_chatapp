@@ -1,25 +1,42 @@
 import List from "./components/list/List";
 import Chat from "./components/chat/Chat";
 import Detail from "./components/detail/Detail";
-import Login from "./components/login/Login";
-import Notification from "./components/notification/Notification";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 const App = () => {
-  const user = false;
+  const user = true;
   return (
-    <div className="container">
-      {user ? (
-        <>
-          <List />
-          <Chat />
-          <Detail />
-        </>
-      ) : (
-        <>
-        <Login />
-        </>
-      )}
-      <Notification/>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          index
+          element={
+            <div className="container">
+              <List />
+              <Chat />
+              <Detail />
+            </div>
+          }
+        ></Route>
+        <Route
+          path="/login"
+          element={
+            <div className="container">
+              <Login />
+            </div>
+          }
+        ></Route>
+        <Route
+          path="/register"
+          element={
+            <div className="container">
+              <Register />
+            </div>
+          }
+        ></Route>
+      </Routes>
+    </BrowserRouter>
   );
 };
 

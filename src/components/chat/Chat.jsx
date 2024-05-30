@@ -9,7 +9,7 @@ const Chat = () => {
   const endRef = useRef(null);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({behavior: "smooth"});
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
   const handleEmoji = (e) => {
