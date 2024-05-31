@@ -3,6 +3,7 @@ import Chat from "./components/chat/Chat";
 import Detail from "./components/detail/Detail";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import Testchat from "./components/testchat/Testchat";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 const App = () => {
   const user = true;
@@ -32,6 +33,14 @@ const App = () => {
           element={
             <div className="container">
               <Register />
+            </div>
+          }
+        ></Route>
+        <Route
+          path="/simar"
+          element={
+            <div className="container">
+              <Testchat />
             </div>
           }
         ></Route>
