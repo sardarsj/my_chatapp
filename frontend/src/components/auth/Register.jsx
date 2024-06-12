@@ -2,52 +2,141 @@ import { useState } from "react";
 import "./register.css";
 import { toast } from "react-toastify";
 import { supabase } from "../../lib/supabase";
-import { Link } from "react-router-dom";
+import { Link, unstable_HistoryRouter } from "react-router-dom";
+import axios from "axios";
+
 import Notification from "../notification/Notification";
+import { useNavigate } from "react-router-dom";
 const Register = () => {
   const [show, setShow] = useState(false);
   const [img, setImg] = useState(false);
+  const [pic, setPic] = useState("");
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [picLoading, setPicLoading] = useState(false); //roadside vaale da hi h
   const handleClick = () => setShow(!show);
   const handleImg = () => setImg(!img);
   const handleBoth = () => {
     handleClick();
     handleImg();
   };
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState({
     file: null,
     url: "",
   });
 
-  const handleAvatar = (e) => {
-    if (e.target.files[0]) {
-      setAvatar({
-        file: e.target.files[0],
-        url: URL.createObjectURL(e.target.files[0]),
-      });
+  // const handleAvatar = (e) => {
+  //   if (e.target.files[0]) {
+  //     setAvatar({
+  //       file: e.target.files[0],
+  //       url: URL.createObjectURL(e.target.files[0]),
+  //     });
+  //   }
+  // };
+
+  //uploading the picture as per roadside
+  const postDetails = (pics) => {
+    setLoading(true);
+    if (pics == undefined) {
+      toast.warning("Please upload image");
+      return;
+    }
+    if (pics.type === "image/jpeg" || pics.type === "image/png") {
+      const data = new FormData();
+      data.append("file", pics);
+      data.append("upload_preset", "talkative-chatapp");
+      data.append("cloud_name", "sardarsj");
+      fetch("https://api.cloudinary.com/v1_1/sardarsj/image/upload", {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setPic(data.url.toString());
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    } else {
+      toast.warning("Please Select an IMage");
     }
   };
+  //await laana pyega edde lyi
   const handleRegister = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const email = formData.get("email");
-    const password = formData.get("password");
+    // setPicLoading(true);
+    if (!name || !email || !password) {
+      toast.warning("Fill all fields");
+      setPicLoading(false);
+      return;
+    }
+
+    // if (password !== confirmpassword) {
+    //   toast({
+    //     title: "Passwords Do Not Match",
+    //     status: "warning",
+    //     duration: 5000,
+    //     isClosable: true,
+    //     position: "bottom",
+    //   });
+    //   return;
+    // }
+
+    console.log(name, email, password, pic);
 
     try {
-      const { user, error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-
-      if (error) throw error;
-
-      toast.success(
-        "Registration successful, please check your email to confirm."
+      //headers for the file (study it)
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+      const { data } = await axios.post(
+        "http://localhost:5000/api/user",
+        {
+          name,
+          email,
+          password,
+          pic,
+        },
+        config
       );
-      console.log("Registered user:", user);
+      console.log(data);
+      toast.success("Registration successful");
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      setPicLoading(false);
+      //bhjnn lyiii
+      navigate("/");
     } catch (error) {
-      toast.error("Registration failed: " + error.message);
-      console.error("Error registering:", error.message);
+      toast.error("Error during registration");
+      // setPicLoading(false);
     }
+
+    //supabase vaala code
+    // const formData = new FormData(e.target);
+    // const email = formData.get("email");
+    // const password = formData.get("password");
+
+    // try {
+    //   const { user, error } = await supabase.auth.signUp({
+    //     email,
+    //     password,
+    //   });
+
+    //   if (error) throw error;
+
+    //   toast.success(
+    //     "Registration successful, please check your email to confirm."
+    //   );
+    //   console.log("Registered user:", user);
+    // } catch (error) {
+    //   toast.error("Registration failed: " + error.message);
+    //   console.error("Error registering:", error.message);
   };
 
   return (
@@ -55,27 +144,36 @@ const Register = () => {
       <div className="item">
         <h2>Create an Account</h2>
         <form onSubmit={handleRegister}>
-          <label htmlFor="file">
+          <label htmlFor="pic">
             <img src={avatar.url || "./avatar.png"} alt="" />
             Upload an image
           </label>
           <input
             type="file"
-            id="file"
+            id="pic"
             style={{ display: "none" }}
-            onChange={handleAvatar}
+            // onChange={handleAvatar}
+            accept="image/*"
+            onChange={(e) => postDetails(e.target.files[0])}
           />
-          <input type="text" placeholder="Username" name="username" />
+          <input
+            type="text"
+            placeholder="Username"
+            name="name"
+            onChange={(e) => setName(e.target.value)}
+          />
           <input
             type="text"
             placeholder="Email"
             name="email"
             autoComplete="off"
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type={show ? "text" : "password"}
             placeholder="Password"
             name="password"
+            onChange={(e) => setPassword(e.target.value)}
           />
           <img
             src={img ? "./show.png" : "./hide.png"}
@@ -84,12 +182,12 @@ const Register = () => {
             alt="show"
           />
           <p>
-        Already have an account? <Link to="/login">Login here</Link>
-      </p>
+            Already have an account? <Link to="/login">Login here</Link>
+          </p>
           <button>Sign Up</button>
         </form>
       </div>
-     
+
       <Notification />
     </div>
   );

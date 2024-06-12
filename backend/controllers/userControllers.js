@@ -53,7 +53,7 @@ const authUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new Error("Failer to create the user");
+    throw new Error("Failer to find the user");
   }
 });
 

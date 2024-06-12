@@ -1,4 +1,4 @@
-// const { stack } = require("../routes/userRoutes");
+// handling errors
 
 const notFound = (req, res, next) => {
     const error = new Error(`Not Found - ${req.originalUrl}`);

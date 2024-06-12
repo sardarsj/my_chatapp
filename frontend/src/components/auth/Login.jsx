@@ -1,38 +1,80 @@
 import { useState } from "react";
 import "./login.css";
+import axios from "axios";
+
 import { toast } from "react-toastify";
 import { supabase } from "../../lib/supabase";
 import { Link } from "react-router-dom";
 import Notification from "../notification/Notification";
+import { useNavigate } from "react-router-dom";
+
 const Login = () => {
   const [show, setShow] = useState(false);
   const [img, setImg] = useState(false);
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [loading, setLoading] = useState(false);
+
   const handleClick = () => setShow(!show);
   const handleImg = () => setImg(!img);
   const handleBoth = () => {
     handleClick();
     handleImg();
   };
+  const navigate = useNavigate();
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const email = formData.get("email");
-    const password = formData.get("password");
+    setLoading(true);
+    if (!email || !password) {
+      toast.warning("Please enter all the fields");
+      // setLoading(false);
+      return;
+    }
 
     try {
-      const { user, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
 
-      if (error) throw error;
-      toast.success("Login successful.");
-      console.log("Logged in user:", user);
+      const { data } = await axios.post(
+        "http://localhost:5000/api/user/login",
+        { email, password },
+        config
+      );
+
+      toast.success("Login successful")
+      // setUser(data);
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      // setLoading(false);
+      navigate("/");
     } catch (error) {
-      toast.error("Login failed: " + error.message);
-      console.error("Error logging in:", error.message);
+      toast.error("Error while logging in");
+      // setLoading(false);
     }
+
+
+    //supabase code
+    // const formData = new FormData(e.target);
+    // const email = formData.get("email");
+    // const password = formData.get("password");
+
+    // try {
+    //   const { user, error } = await supabase.auth.signInWithPassword({
+    //     email,
+    //     password,
+    //   });
+
+    //   if (error) throw error;
+    //   toast.success("Login successful.");
+    //   console.log("Logged in user:", user);
+    // } catch (error) {
+    //   toast.error("Login failed: " + error.message);
+    //   console.error("Error logging in:", error.message);
+    // }
   };
 
   return (
@@ -45,11 +87,14 @@ const Login = () => {
             placeholder="Email"
             name="email"
             autoComplete="off"
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type={show ? "text" : "password"}
             placeholder="Password"
             name="password"
+            onChange={(e) => setPassword(e.target.value)}
+
           />
           <img
             src={img ? "./show.png" : "./hide.png"}
