@@ -1,9 +1,19 @@
 import EmojiPicker from "emoji-picker-react";
 import "./chat.css";
+import { ChatState } from "../Context/ChatProvider";
 import { useEffect, useRef, useState } from "react";
 
 const Chat = (props) => {
   const {showChatPage, setShowChatPage} = props;
+  const { getUserData, setUserData } = ChatState();
+  const [user, setUser] = useState(getUserData());
+
+
+  useEffect(() => {
+    const userData = getUserData();
+    setUser(userData);
+  }, []);
+
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
 
@@ -22,9 +32,10 @@ const Chat = (props) => {
     <div className="chat">
       <div className="top">
         <div className="user">
-          <img src="./avatar.png" alt="" />
+          <img src={user.pic} alt="" />
+          {/* <img src="./avatar.png" alt="" /> */}
           <div className="texts">
-            <span>Jane Doe</span>
+            <span>{user.name}</span>
             <p>Lorem ipsum dolor sit amet.</p>
           </div>
         </div>
