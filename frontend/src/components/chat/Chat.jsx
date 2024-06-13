@@ -2,7 +2,8 @@ import EmojiPicker from "emoji-picker-react";
 import "./chat.css";
 import { useEffect, useRef, useState } from "react";
 
-const Chat = () => {
+const Chat = (props) => {
+  const {showChatPage, setShowChatPage} = props;
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
 
@@ -30,7 +31,7 @@ const Chat = () => {
         <div className="icons">
           <img src="./phone.png" alt="" />
           <img src="./video.png" alt="" />
-          <img src="./info.png" alt="" />
+          <img src="./info.png" alt="" onClick={() => setShowChatPage(!showChatPage)}/>
         </div>
       </div>
       <div className="center">

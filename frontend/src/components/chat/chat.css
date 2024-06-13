@@ -56,7 +56,7 @@
     .center{
         padding: 20px;
         flex: 1;
-        overflow: scroll;
+        overflow: auto;
         display: flex;
         flex-direction: column;
         gap: 20px;
@@ -142,7 +142,7 @@
             .picker{
                 position: absolute;
                 bottom: 50px;
-                left: 0;
+                right: 0;
             }
         }
         .sendButton{

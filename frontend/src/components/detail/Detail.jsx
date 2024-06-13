@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const Detail = () => {
   const { getUserData, setUserData } = ChatState();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(getUserData());
   const navigate = useNavigate();
   useEffect(() => {
     const userData = getUserData();
@@ -14,16 +14,16 @@ const Detail = () => {
 
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
-    setUser(null);
+    setUserData(null);
     navigate("/auth");
-  };
+  };``
 
   return (
     <div className="detail">
       <div className="user">
         {/* pic need to be pushed during registration */}
-        <img src="/public/avatar.png" alt="" />
-        {/* <img src={user.pic} alt="" /> */}
+        {/* <img src="/public/avatar.png" alt="" /> */}
+        <img src={user.pic} alt="" />
         {/* <h2>Jane Doe</h2> */}
         <h2>{user.name}</h2>
         <p>{user.email}</p>

@@ -16,10 +16,20 @@ const ChatProvider = ({ children }) => {
   // }, [user]);
 
   const getUserData = () => {
-    return user ? user  : JSON.parse(localStorage.getItem("userInfo"));
+    let userData = user ? user : JSON.parse(localStorage.getItem("userInfo"));
+    if(userData){
+      return userData;
+    }
+    else return navigate("/auth");
   };
+
   const setUserData = (data) => {
-    localStorage.setItem("userInfo", JSON.stringify(data));
+    if(data){
+      localStorage.setItem("userInfo", JSON.stringify(data));
+    }
+    else{
+      localStorage.removeItem("userInfo");
+    }
     setUser(data);
   };
 
