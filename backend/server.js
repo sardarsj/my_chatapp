@@ -4,6 +4,7 @@ const {chats} = require('./dummydata/data');
 const connectDB = require('./config/db');
 require('dotenv').config();
 const userRoutes = require('./routes/userRoutes');
+const chatRoutes = require('./routes/chatRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 connectDB();
@@ -18,6 +19,8 @@ app.get('/', (req, res) =>{
 });
 
 app.use('/api/user', userRoutes);
+app.use('/api/chat', chatRoutes);
+
 
 //if uprr vaala koi URL ni khulega then thle error handling vl chale jaayega
 
