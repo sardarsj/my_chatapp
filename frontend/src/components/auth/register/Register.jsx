@@ -1,11 +1,11 @@
 import { useState } from "react";
 import "./register.css";
 import { toast } from "react-toastify";
-import { supabase } from "../../lib/supabase";
+import { supabase } from "../../../lib/supabase";
 import { Link, unstable_HistoryRouter } from "react-router-dom";
 import axios from "axios";
 
-import Notification from "../notification/Notification";
+import Notification from "../../notification/Notification";
 import { useNavigate } from "react-router-dom";
 const Register = () => {
   const [show, setShow] = useState(false);
@@ -77,16 +77,9 @@ const Register = () => {
     }
 
     // if (password !== confirmpassword) {
-    //   toast({
-    //     title: "Passwords Do Not Match",
-    //     status: "warning",
-    //     duration: 5000,
-    //     isClosable: true,
-    //     position: "bottom",
-    //   });
-    //   return;
+    //   toast.warning("Password does not match");
     // }
-
+    
     console.log(name, email, password, pic);
 
     try {
@@ -111,7 +104,7 @@ const Register = () => {
       localStorage.setItem("userInfo", JSON.stringify(data));
       setPicLoading(false);
       //bhjnn lyiii
-      navigate("/");
+      navigate("/chats");
     } catch (error) {
       toast.error("Error during registration");
       // setPicLoading(false);

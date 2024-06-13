@@ -1,13 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./detail.css";
+import { ChatState } from "../Context/ChatProvider";
+import { useNavigate } from "react-router-dom";
 
 const Detail = () => {
+  const { getUserData, setUserData } = ChatState();
+  const [user, setUser] = useState();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const userData = getUserData();
+    setUser(userData);
+  }, []);
+
+  const logoutHandler = () => {
+    localStorage.removeItem("userInfo");
+    setUser(null);
+    navigate("/auth");
+  };
+
   return (
     <div className="detail">
       <div className="user">
-        <img src="./avatar.png" alt="" />
-        <h2>Jane Doe</h2>
-        <p>Lorem ipsum dolor sit amet.</p>
+        {/* pic need to be pushed during registration */}
+        <img src="/public/avatar.png" alt="" />
+        {/* <img src={user.pic} alt="" /> */}
+        {/* <h2>Jane Doe</h2> */}
+        <h2>{user.name}</h2>
+        <p>{user.email}</p>
+        {/* <p>Lorem ipsum dolor sit amet.</p> */}
       </div>
       <div className="info">
         <div className="option">
@@ -42,7 +62,7 @@ const Detail = () => {
                 />
                 <span>photo_2024_2.png</span>
               </div>
-              <img src="./download.png" alt="" className="icon"/>
+              <img src="./download.png" alt="" className="icon" />
             </div>
             <div className="photoItem">
               <div className="photoDetail">
@@ -52,7 +72,7 @@ const Detail = () => {
                 />
                 <span>photo_2024_2.png</span>
               </div>
-              <img src="./download.png" alt="" className="icon"/>
+              <img src="./download.png" alt="" className="icon" />
             </div>
             <div className="photoItem">
               <div className="photoDetail">
@@ -83,7 +103,9 @@ const Detail = () => {
           </div>
         </div>
         <button>Block User</button>
-        <button className="logout">LogOut</button>
+        <button className="logout" onClick={logoutHandler}>
+          LogOut
+        </button>
       </div>
     </div>
   );

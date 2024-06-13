@@ -3,12 +3,14 @@ import "./login.css";
 import axios from "axios";
 
 import { toast } from "react-toastify";
-import { supabase } from "../../lib/supabase";
+import { supabase } from "../../../lib/supabase";
 import { Link } from "react-router-dom";
-import Notification from "../notification/Notification";
+import Notification from "../../notification/Notification";
 import { useNavigate } from "react-router-dom";
+import { ChatState } from "../../Context/ChatProvider";
 
 const Login = () => {
+  const { setUserData } = ChatState();
   const [show, setShow] = useState(false);
   const [img, setImg] = useState(false);
   const [email, setEmail] = useState();
@@ -48,9 +50,10 @@ const Login = () => {
 
       toast.success("Login successful")
       // setUser(data);
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      // localStorage.setItem("userInfo", JSON.stringify(data));
+      setUserData(data);
       // setLoading(false);
-      navigate("/");
+      navigate("/chats");
     } catch (error) {
       toast.error("Error while logging in");
       // setLoading(false);
