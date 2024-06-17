@@ -6,7 +6,6 @@ const UserBadgeItem = ({ user, handleFunction }) => {
   return (
     <div>
       <span
-        onClick={handleFunction}
         style={{
           cursor: "pointer",
           padding: "5px 10px",
@@ -23,7 +22,8 @@ const UserBadgeItem = ({ user, handleFunction }) => {
         }}
       >
         {user.name}
-        <img src="./minus.png" alt="" />
+        
+        <img src="./minus.png" alt="" onClick={handleFunction} />
       </span>
     </div>
   );

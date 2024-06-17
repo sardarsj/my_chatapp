@@ -65,7 +65,7 @@ const AddInGroup = ({ children }) => {
   };
 
   const handleDelete = (delUser) => {
-    setselectedUsers(selectedUsers.filte((sel) => sel._id !== delUser._id));
+    setselectedUsers(selectedUsers.filter((sel) => sel._id !== delUser._id));
   };
 
   const handleGroup = (userToAdd) => {
@@ -108,7 +108,6 @@ const AddInGroup = ({ children }) => {
 
   return (
     <div className="addUser">
-      {/* eh children da use ni ptaa minuu */}
       <span>{children}</span>
       <span>Create Group Chat</span>
       <form>
@@ -147,6 +146,7 @@ const AddInGroup = ({ children }) => {
             />
           ))
       )}
+
       {/* loading horhi h that we can use spinner or something */}
       <button onClick={handleSubmit}>Create Chat</button>
 
