@@ -9,7 +9,8 @@ import axios from "axios";
 
 const addUser = () => {
   //copied from details.jsx
-  const { getUserData, setUserData, setSelectedChat, chats, setChats } = ChatState();
+  const { getUserData, setUserData, setSelectedChat, chats, setChats } =
+    ChatState();
   const [user, setUser] = useState(getUserData());
   useEffect(() => {
     const userData = getUserData();
@@ -66,14 +67,17 @@ const addUser = () => {
         },
       };
 
-      const {data} = await axios.post("http://localhost:5000/api/chat", {userId}, config);
+      const { data } = await axios.post(
+        "http://localhost:5000/api/chat",
+        { userId },
+        config
+      );
 
-      if(!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+      if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
       setSelectedChat(data);
       setLoadingChat(false);
-
     } catch (error) {
-      toast.error("Error fetching the chats")
+      toast.error("Error fetching the chats");
     }
   };
 
@@ -104,13 +108,6 @@ const addUser = () => {
       )}
       {/* loading horhi h that we can use spinner or something */}
 
-      {/* <div className="user">
-        <div className="detail">
-          <img src="./avatar.png" alt="" />
-          <span>Jane Doe</span>
-        </div>
-        <button>Add User</button>
-      </div> */}
       <Notification />
     </div>
   );

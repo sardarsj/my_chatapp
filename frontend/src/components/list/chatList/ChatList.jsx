@@ -42,7 +42,7 @@ const ChatList = () => {
         "http://localhost:5000/api/chat",
         config
       );
-      console.log(data);
+      // console.log(data);
       setChats(data);
     } catch (error) {
       toast.warning("Failed to load the chats");
@@ -92,33 +92,6 @@ const ChatList = () => {
         )}
       </div>
 
-      {/* : (
-        chats.map((chat) => (
-          <ChatListItem
-            key={chat._id}
-            // user={user}
-            handleFunction={() => accessChat(chat._id)}
-          />
-        )
-      )
-        // <ChatLoading />
-        
-      )}; */}
-
-      {/* <div className="item">
-        <img src="./avatar.png" alt="" />
-        <div className="texts">
-          <span>Jane Doe</span>
-          <p>Hello</p>
-        </div>
-      </div>
-      <div className="item">
-        <img src="./avatar.png" alt="" />
-        <div className="texts">
-          <span>Jane Doe</span>
-          <p>Hello</p>
-        </div>
-      </div> */}
       {addMode && <AddUser />}
     </div>
   );
