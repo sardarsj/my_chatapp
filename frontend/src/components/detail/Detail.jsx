@@ -4,31 +4,30 @@ import { ChatState } from "../Context/ChatProvider";
 import { useNavigate } from "react-router-dom";
 import ProfileModal from "../miscellaneous/ProfileModal";
 import UpdateGroupChatModal from "../miscellaneous/UpdateGroupChatModal";
-import { getSenderFull } from "../../config/ChatLogics";
+import { getSender, getSenderFull } from "../../config/ChatLogics";
 
 const Detail = (props) => {
   const { getUserData, setUserData, selectedChat } = ChatState();
   const [user, setUser] = useState(getUserData());
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   const userData = getUserData();
-  //   setUser(userData);
-  // }, []);
 
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
     setUserData(null);
     navigate("/auth");
-  };``
+  };
+  ``;
 
   return (
     <div className="detail">
       <div className="user">
-
-      {selectedChat && (
+        {selectedChat && (
           <div className="user">
+            <img src="./avatar.png" alt="" />
+
             {!selectedChat.isGroupChat ? (
               <>
+                {getSender(user, selectedChat.users)}
                 <ProfileModal user={getSenderFull(user, selectedChat.users)} />
               </>
             ) : (
@@ -41,10 +40,10 @@ const Detail = (props) => {
             )}
 
             {/* <img src={user.pic} alt="" /> */}
-            <img src="./avatar.png" alt="" />
+            {/* <img src="./avatar.png" alt="" /> */}
             <div className="texts">
-              <span>{selectedChat.chatName}</span>
-              {/* <span>{user.name}</span> */}
+              {/* <span>{selectedChat.chatName}</span> */}
+              {/* <span>{selectedChat.name}</span> */}
               {/* <p>Lorem ipsum dolor sit amet.</p> */}
             </div>
           </div>
@@ -58,7 +57,7 @@ const Detail = (props) => {
         {/* <p>Lorem ipsum dolor sit amet.</p> */}
       </div>
       <div className="info">
-        <div className="option">
+        {/* <div className="option">
           <div className="title">
             <span>Chat Settings</span>
             <img src="./arrowUp.png" alt="" />
@@ -129,8 +128,8 @@ const Detail = (props) => {
             <span>Shared Files</span>
             <img src="./arrowUp.png" alt="" />
           </div>
-        </div>
-        <button>Block User</button>
+        </div> */}
+        {/* <button>Block User</button> */}
         <button className="logout" onClick={logoutHandler}>
           LogOut
         </button>

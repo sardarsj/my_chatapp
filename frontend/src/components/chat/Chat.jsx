@@ -8,7 +8,6 @@ import ProfileModal from "../miscellaneous/ProfileModal";
 import UpdateGroupChatModal from "../miscellaneous/UpdateGroupChatModal";
 
 //etho props htaaya te detail vaala page dikhna bnd hgyaa h
-// const Chat = ({ fetchAgain, setFetchAgain }) => {
 const Chat = (props) => {
   const { showChatPage, setShowChatPage } = props;
 
@@ -21,6 +20,7 @@ const Chat = (props) => {
     chats,
     setChats,
   } = ChatState();
+
   const [user, setUser] = useState(getUserData());
   useEffect(() => {
     const userData = getUserData();
@@ -53,22 +53,23 @@ const Chat = (props) => {
           <div className="user">
             {!selectedChat.isGroupChat ? (
               <>
+                {getSender(user, selectedChat.users)} 
                 <ProfileModal user={getSenderFull(user, selectedChat.users)} />
               </>
             ) : (
               <>
-                <UpdateGroupChatModal
+                {/* <UpdateGroupChatModal
                   fetchAgain={props.fetchAgain}
                   setFetchAgain={props.setFetchAgain}
-                />
+                /> */}
               </>
             )}
 
-            {/* <img src={user.pic} alt="" /> */}
+            {/* <img src={selectedChat.pic} alt="" /> */}
             <img src="./avatar.png" alt="" />
             <div className="texts">
               <span>{selectedChat.chatName}</span>
-              {/* <span>{user.name}</span> */}
+              {/* <span>{selectedChat.sender}</span> */}
               <p>Lorem ipsum dolor sit amet.</p>
             </div>
           </div>
@@ -86,7 +87,8 @@ const Chat = (props) => {
 
       {/* from here main chat portion starts */}
 
-      {/* <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} /> */}
+      <SingleChat fetchAgain={props.fetchAgain} setFetchAgain={props.setFetchAgain} />
+      
 
       {/* till here the chat box is present */}
       <div className="bottom">
