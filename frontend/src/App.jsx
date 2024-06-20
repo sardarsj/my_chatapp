@@ -16,7 +16,6 @@ const App = () => {
         <Routes>
           <Route path="/auth" element={<Homepage />}></Route>
           <Route path="/chats" element={<Chatpage />}></Route>
-
         </Routes>
       </ChatProvider>
     </BrowserRouter>

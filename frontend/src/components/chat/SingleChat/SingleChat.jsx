@@ -4,6 +4,11 @@ import { ChatState } from "../../Context/ChatProvider";
 // import "./chat.css";
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
+
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [newMessage, setNewMessage] = useState();
+  const {user, selectedChat, setSelectedChat } = ChatState();
   // const { getUserData, setUserData, selectedChat, setSelectedChat } = ChatState();
   // const [user, setUser] = useState(getUserData());
 
@@ -12,7 +17,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   //   setUser(userData);
   // }, []);
 
-  const {user, selectedChat, setSelectedChat } = ChatState();
 
   return (
     <>
