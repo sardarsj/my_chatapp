@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import UserListItem from "../userAvatar/UserListItem";
 
-const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
+const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   const [groupChatName, setGroupChatName] = useState();
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -40,7 +40,8 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
       );
       user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
       setFetchAgain(!fetchAgain);
-      setLoading(false);
+      fetchMessages(); //added so that after a user is removed all the chats refreshes
+      setLoading(false);  
     } catch (error) {
       toast.error("Error occured");
       setLoading(false);

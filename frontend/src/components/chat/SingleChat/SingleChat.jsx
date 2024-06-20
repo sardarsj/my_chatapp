@@ -1,192 +1,50 @@
 import React, { useEffect, useState } from "react";
 import "../chat.css";
 import { ChatState } from "../../Context/ChatProvider";
-// import "./chat.css";
+import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from "../../../config/ChatLogics";
 
-const SingleChat = ({ fetchAgain, setFetchAgain }) => {
+const SingleChat = ({ messages }) => {
 
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [newMessage, setNewMessage] = useState();
-  const {user, selectedChat, setSelectedChat } = ChatState();
-  // const { getUserData, setUserData, selectedChat, setSelectedChat } = ChatState();
-  // const [user, setUser] = useState(getUserData());
-
-  // useEffect(() => {
-  //   const userData = getUserData();
-  //   setUser(userData);
-  // }, []);
-
-
+  const { getUserData, setUserData, selectedChat } = ChatState();
+  const [user, setUser] = useState(getUserData());
   return (
     <>
-    {selectedChat ? (
-        <div className="center">
-        <div className="message">
-          <img src="./avatar.png" alt="" />
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui
-              nobis repudiandae, repellat delectus a optio excepturi commodi,
-              facere, temporibus molestias illum?
-            </p>
-            <span>1 min ago</span>
+      {messages &&
+        messages.map((m, i) => (
+          <div style={{ display: "flex" }} key={m._id}>
+            {(isSameSender(messages, m, i, user._id) ||
+              isLastMessage(messages, i, user._id)) && (
+              <span label={m.sender.name} placement="bottom-start" hasArrow>
+                {/* instead of div he used avatar  */}
+                <div
+                  mt="7px"
+                  mr={1}
+                  size="sm"
+                  cursor="pointer"
+                  name={m.sender.name}
+                  src={m.sender.pic}
+                >
+                </div>
+              </span>
+            )}
+            <span
+              style={{
+                backgroundColor: `${
+                  m.sender._id === user._id ? "rgb(123, 67, 179)" : "rgb(140, 24, 90)"
+                }`,
+                marginLeft: isSameSenderMargin(messages, m, i, user._id),
+                marginTop: isSameUser(messages, m, i, user._id) ? 3 : 10,
+                borderRadius: "20px",
+                padding: "5px 15px",
+                maxWidth: "75%",
+              }}
+            >
+              {m.content}
+            </span>
           </div>
-        </div>
-        <div className="message own">
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui
-              nobis repudiandae, repellat delectus a optio excepturi commodi,
-              facere, temporibus molestias illum?
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message">
-          <img src="./avatar.png" alt="" />
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui
-              nobis repudiandae, repellat delectus a optio excepturi commodi,
-              facere, temporibus molestias illum?
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message own">
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui
-              nobis repudiandae, repellat delectus a optio excepturi commodi,
-              facere, temporibus molestias illum?
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message">
-          <img src="./avatar.png" alt="" />
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui
-              nobis repudiandae, repellat delectus a optio excepturi commodi,
-              facere, temporibus molestias illum?
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message own">
-          <div className="texts">
-            <img
-              src="https://images.pexels.com/photos/10632123/pexels-photo-10632123.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              alt=""
-            />
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui
-              nobis repudiandae, repellat delectus a optio excepturi commodi,
-              facere, temporibus molestias illum?
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        {/* <div ref={endRef}></div> */}
-      </div>
-    ):(
-        <span>
-            click on the user to start chatting
-        </span>
-    )}
+        ))}
     </>
   );
 };
 
 export default SingleChat;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// <div className="center">
-//       <div className="message">
-//         <img src="./avatar.png" alt="" />
-//         <div className="texts">
-//           <p>
-//             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui nobis
-//             repudiandae, repellat delectus a optio excepturi commodi, facere,
-//             temporibus molestias illum?
-//           </p>
-//           <span>1 min ago</span>
-//         </div>
-//       </div>
-//       <div className="message own">
-//         <div className="texts">
-//           <p>
-//             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui nobis
-//             repudiandae, repellat delectus a optio excepturi commodi, facere,
-//             temporibus molestias illum?
-//           </p>
-//           <span>1 min ago</span>
-//         </div>
-//       </div>
-//       <div className="message">
-//         <img src="./avatar.png" alt="" />
-//         <div className="texts">
-//           <p>
-//             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui nobis
-//             repudiandae, repellat delectus a optio excepturi commodi, facere,
-//             temporibus molestias illum?
-//           </p>
-//           <span>1 min ago</span>
-//         </div>
-//       </div>
-//       <div className="message own">
-//         <div className="texts">
-//           <p>
-//             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui nobis
-//             repudiandae, repellat delectus a optio excepturi commodi, facere,
-//             temporibus molestias illum?
-//           </p>
-//           <span>1 min ago</span>
-//         </div>
-//       </div>
-//       <div className="message">
-//         <img src="./avatar.png" alt="" />
-//         <div className="texts">
-//           <p>
-//             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui nobis
-//             repudiandae, repellat delectus a optio excepturi commodi, facere,
-//             temporibus molestias illum?
-//           </p>
-//           <span>1 min ago</span>
-//         </div>
-//       </div>
-//       <div className="message own">
-//         <div className="texts">
-//           <img
-//             src="https://images.pexels.com/photos/10632123/pexels-photo-10632123.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-//             alt=""
-//           />
-//           <p>
-//             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui nobis
-//             repudiandae, repellat delectus a optio excepturi commodi, facere,
-//             temporibus molestias illum?
-//           </p>
-//           <span>1 min ago</span>
-//         </div>
-//       </div>
-//       {/* <div ref={endRef}></div> */}
-//     </div>
