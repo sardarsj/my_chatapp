@@ -2,15 +2,18 @@ import React, { useEffect, useState } from "react";
 import "./detail.css";
 import { ChatState } from "../Context/ChatProvider";
 import { useNavigate } from "react-router-dom";
+import ProfileModal from "../miscellaneous/ProfileModal";
+import UpdateGroupChatModal from "../miscellaneous/UpdateGroupChatModal";
+import { getSenderFull } from "../../config/ChatLogics";
 
-const Detail = () => {
-  const { getUserData, setUserData } = ChatState();
+const Detail = (props) => {
+  const { getUserData, setUserData, selectedChat } = ChatState();
   const [user, setUser] = useState(getUserData());
   const navigate = useNavigate();
-  useEffect(() => {
-    const userData = getUserData();
-    setUser(userData);
-  }, []);
+  // useEffect(() => {
+  //   const userData = getUserData();
+  //   setUser(userData);
+  // }, []);
 
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
@@ -21,12 +24,37 @@ const Detail = () => {
   return (
     <div className="detail">
       <div className="user">
+
+      {selectedChat && (
+          <div className="user">
+            {!selectedChat.isGroupChat ? (
+              <>
+                <ProfileModal user={getSenderFull(user, selectedChat.users)} />
+              </>
+            ) : (
+              <>
+                <UpdateGroupChatModal
+                  fetchAgain={props.fetchAgain}
+                  setFetchAgain={props.setFetchAgain}
+                />
+              </>
+            )}
+
+            {/* <img src={user.pic} alt="" /> */}
+            <img src="./avatar.png" alt="" />
+            <div className="texts">
+              <span>{selectedChat.chatName}</span>
+              {/* <span>{user.name}</span> */}
+              {/* <p>Lorem ipsum dolor sit amet.</p> */}
+            </div>
+          </div>
+        )}
         {/* pic need to be pushed during registration */}
         {/* <img src="/public/avatar.png" alt="" /> */}
-        <img src={user.pic} alt="" />
-        {/* <h2>Jane Doe</h2> */}
-        <h2>{user.name}</h2>
-        <p>{user.email}</p>
+        {/* <img src={user.pic} alt="" /> */}
+        {/* <h2>Sender's name</h2> */}
+        {/* <h2>{user.name}<h2> */}
+        {/* <p>{user.email}</p> */}
         {/* <p>Lorem ipsum dolor sit amet.</p> */}
       </div>
       <div className="info">

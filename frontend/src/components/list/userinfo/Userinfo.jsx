@@ -1,14 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./userinfo.css";
 import AddInGroup from "../creategroup/AddInGroup";
+import { ChatState } from "../../Context/ChatProvider";
 const Userinfo = () => {
+  
+  const { getUserData, setUserData } = ChatState();
+  const [user, setUser] = useState(getUserData());
+  useEffect(() => {
+    const userData = getUserData();
+    setUser(userData);
+  }, []);
+
+
+
   const [addMode, setAddMode] = useState(false);
 
   return (
     <div className="userInfo">
       <div className="user">
-        <img src="./avatar.png" alt="" />
-        <h2>John Doe</h2>
+        <img src={user.pic}  alt="" />
+        <h2>{user.name}</h2>
       </div>
       <div className="icons">
         <img src="./more.png" alt="" />

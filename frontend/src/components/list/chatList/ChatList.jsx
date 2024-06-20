@@ -9,7 +9,7 @@ import UserListItem from "../../userAvatar/UserListItem";
 import ChatListItem from "../../userAvatar/ChatListItem";
 import { getSender } from "../../../config/ChatLogics";
 
-const ChatList = () => {
+const ChatList = ({fetchAgain}) => {
   const [loadingChat, setLoadingChat] = useState(false);
   const [addMode, setAddMode] = useState(false);
 
@@ -42,8 +42,9 @@ const ChatList = () => {
         "http://localhost:5000/api/chat",
         config
       );
-      // console.log(data);
+       console.log(data);
       setChats(data);
+      setSelectedChat(data[0]);
     } catch (error) {
       toast.warning("Failed to load the chats");
     }
@@ -52,7 +53,7 @@ const ChatList = () => {
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
-  }, []);
+  }, [fetchAgain]);
 
   return (
     <div className="chatlist">

@@ -3,7 +3,7 @@ import "./list.css";
 import Userinfo from "./userinfo/Userinfo";
 import ChatList from "./chatList/ChatList";
 import { ChatState } from "../Context/ChatProvider";
-const List = () => {
+const List = (props) => {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -16,7 +16,7 @@ const List = () => {
       <Userinfo />
       <ChatList />
     </div>
-  );
+  );  
 };
 
 export default List;

@@ -20,14 +20,15 @@ const accessChat = asyncHandler(async (req, res) => {
     .populate("users", "-password") //it means password not required
     .populate("latestMessage");
   //for above reference check chatModel
-
   isChat = await User.populate(isChat, {
     path: "latestMessage.sender",
     select: "name pic email",
   });
-
+  
+  console.log("isChat", isChat);
+  
   //if chat exists then
-  if (isChat.lenght > 0) {
+  if (isChat.length > 0) {
     res.send(isChat[0]);
   } else {
     //create new chat

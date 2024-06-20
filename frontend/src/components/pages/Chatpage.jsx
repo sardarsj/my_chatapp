@@ -8,11 +8,12 @@ const Chatpage = () => {
   //destructuring user 
   // const {user} = ChatState();
   const [showChatPage, setShowChatPage] = useState(false);
+  const [fetchAgain, setFetchAgain] = useState(false);
 
   return (
     <div className='container'>
-      <List/>
-      <Chat showChatPage={showChatPage} setShowChatPage={setShowChatPage} />
+      <List fetchAgain={fetchAgain}/>
+      <Chat showChatPage={showChatPage} setShowChatPage={setShowChatPage} fetchAgain={fetchAgain} setFetchAgain = {setFetchAgain}/>
       {showChatPage && <Detail/>}
     </div>
     

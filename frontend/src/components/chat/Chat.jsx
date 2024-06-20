@@ -2,26 +2,44 @@ import EmojiPicker from "emoji-picker-react";
 import "./chat.css";
 import { ChatState } from "../Context/ChatProvider";
 import { useEffect, useRef, useState } from "react";
+import SingleChat from "./SingleChat/SingleChat";
+import { getSender, getSenderFull } from "../../config/ChatLogics";
+import ProfileModal from "../miscellaneous/ProfileModal";
+import UpdateGroupChatModal from "../miscellaneous/UpdateGroupChatModal";
 
+//etho props htaaya te detail vaala page dikhna bnd hgyaa h
+// const Chat = ({ fetchAgain, setFetchAgain }) => {
 const Chat = (props) => {
-  const {showChatPage, setShowChatPage} = props;
-  const { getUserData, setUserData } = ChatState();
+  const { showChatPage, setShowChatPage } = props;
+
+  //copied from details.jsx
+  const {
+    getUserData,
+    setUserData,
+    selectedChat,
+    setSelectedChat,
+    chats,
+    setChats,
+  } = ChatState();
   const [user, setUser] = useState(getUserData());
-
-
   useEffect(() => {
     const userData = getUserData();
     setUser(userData);
   }, []);
+  //copied from details.jsx
+
+  useEffect(() => {
+    console.log("Selected Chat: ", selectedChat);
+  }, [selectedChat]);
 
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
 
-  const endRef = useRef(null);
+  // const endRef = useRef(null);
 
-  useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  // useEffect(() => {
+  //   endRef.current?.scrollIntoView({ behavior: "smooth" });
+  // }, []);
 
   const handleEmoji = (e) => {
     setText((prev) => prev + e.emoji);
@@ -31,90 +49,46 @@ const Chat = (props) => {
   return (
     <div className="chat">
       <div className="top">
-        <div className="user">
-          <img src={user.pic} alt="" />
-          {/* <img src="./avatar.png" alt="" /> */}
-          <div className="texts">
-            <span>{user.name}</span>
-            <p>Lorem ipsum dolor sit amet.</p>
+        {selectedChat && (
+          <div className="user">
+            {!selectedChat.isGroupChat ? (
+              <>
+                <ProfileModal user={getSenderFull(user, selectedChat.users)} />
+              </>
+            ) : (
+              <>
+                <UpdateGroupChatModal
+                  fetchAgain={props.fetchAgain}
+                  setFetchAgain={props.setFetchAgain}
+                />
+              </>
+            )}
+
+            {/* <img src={user.pic} alt="" /> */}
+            <img src="./avatar.png" alt="" />
+            <div className="texts">
+              <span>{selectedChat.chatName}</span>
+              {/* <span>{user.name}</span> */}
+              <p>Lorem ipsum dolor sit amet.</p>
+            </div>
           </div>
-        </div>
+        )}
         <div className="icons">
           <img src="./phone.png" alt="" />
           <img src="./video.png" alt="" />
-          <img src="./info.png" alt="" onClick={() => setShowChatPage(!showChatPage)}/>
+          <img
+            src="./info.png"
+            alt=""
+            onClick={() => setShowChatPage(!showChatPage)}
+          />
         </div>
       </div>
-      <div className="center">
-        <div className="message">
-          <img src="./avatar.png" alt="" />
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui
-              nobis repudiandae, repellat delectus a optio excepturi commodi,
-              facere, temporibus molestias illum?
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message own">
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui
-              nobis repudiandae, repellat delectus a optio excepturi commodi,
-              facere, temporibus molestias illum?
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message">
-          <img src="./avatar.png" alt="" />
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui
-              nobis repudiandae, repellat delectus a optio excepturi commodi,
-              facere, temporibus molestias illum?
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message own">
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui
-              nobis repudiandae, repellat delectus a optio excepturi commodi,
-              facere, temporibus molestias illum?
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message">
-          <img src="./avatar.png" alt="" />
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui
-              nobis repudiandae, repellat delectus a optio excepturi commodi,
-              facere, temporibus molestias illum?
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message own">
-          <div className="texts">
-            <img
-              src="https://images.pexels.com/photos/10632123/pexels-photo-10632123.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              alt=""
-            />
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui
-              nobis repudiandae, repellat delectus a optio excepturi commodi,
-              facere, temporibus molestias illum?
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div ref={endRef}></div>
-      </div>
+
+      {/* from here main chat portion starts */}
+
+      {/* <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} /> */}
+
+      {/* till here the chat box is present */}
       <div className="bottom">
         <div className="icons">
           <img src="./img.png" alt="" />
