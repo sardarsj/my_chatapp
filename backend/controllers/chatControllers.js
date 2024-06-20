@@ -5,10 +5,18 @@ const User = require("../models/userModel");
 const accessChat = asyncHandler(async (req, res) => {
   const { userId } = req.body; //pehle userid url toh laili
 
+  // console.log(userId);
+
   if (!userId) {
     console.log("UserId param not sent with request");
     return res.sendStatus(400);
   }
+
+  if (!req.user || !req.user._id) {
+    console.log("User not authenticated");
+    return res.sendStatus(401);
+  } 
+
 
   var isChat = await Chat.find({
     isGroupChat: false,
@@ -19,13 +27,15 @@ const accessChat = asyncHandler(async (req, res) => {
   })
     .populate("users", "-password") //it means password not required
     .populate("latestMessage");
+
   //for above reference check chatModel
+
   isChat = await User.populate(isChat, {
     path: "latestMessage.sender",
     select: "name pic email",
   });
   
-  console.log("isChat", isChat);
+  // console.log("isChat", isChat);
   
   //if chat exists then
   if (isChat.length > 0) {
@@ -48,6 +58,7 @@ const accessChat = asyncHandler(async (req, res) => {
       );
 
       res.status(200).send(FullChat);
+      // res.status(200).json(FullChat);
     } catch (error) {
       res.status(400);
       throw new Error(error.message);
@@ -172,6 +183,7 @@ const removeFromGroup = asyncHandler(async (req, res) => {
     res.json(removed);
   }
 });
+
 module.exports = {
   accessChat,
   fetchChats,
