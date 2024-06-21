@@ -8,6 +8,10 @@ import ProfileModal from "../miscellaneous/ProfileModal";
 import UpdateGroupChatModal from "../miscellaneous/UpdateGroupChatModal";
 import axios from "axios";
 import { toast } from "react-toastify";
+import io from "socket.io-client";
+
+const ENDPOINT = "http://localhost:5000";
+var socket, selectedChatCompare;
 
 //etho props htaaya te detail vaala page dikhna bnd hgyaa h
 const Chat = (props) => {
@@ -17,6 +21,8 @@ const Chat = (props) => {
   const [newMessage, setNewMessage] = useState();
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
+  const [socketConnected, setSocketConnected] = useState(false);
+
   //copied from details.jsx
   const {
     getUserData,
@@ -44,10 +50,18 @@ const Chat = (props) => {
   //   endRef.current?.scrollIntoView({ behavior: "smooth" });
   // }, []);
 
+  //should have created it in singlechat.jsx
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connection", () => setSocketConnected(true));
+  }, []);
+
   const handleEmoji = (e) => {
     setText((prev) => prev + e.emoji);
     setOpen(false);
   };
+
   const fetchMessages = async (e) => {
     if (!selectedChat) return;
 
@@ -64,9 +78,11 @@ const Chat = (props) => {
         config
       );
 
-      console.log(messages);
+      // console.log(messages);
       setMessages(data);
       setLoading(false);
+
+      socket.emit("join chat", selectedChat._id);
     } catch (error) {
       toast.error("Error Occured while fetching chats");
     }
@@ -74,7 +90,20 @@ const Chat = (props) => {
 
   useEffect(() => {
     fetchMessages();
+    selectedChatCompare = selectedChat;
   }, [selectedChat]); //whenever user changes chat it will run
+
+  useEffect(() =>  {
+    socket.on("message received", (newMessageReceived) => {
+      if(!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id ){
+        //give notification
+      }else{
+        setMessages([...messages, newMessageReceived]);
+      }
+    });
+  })
+
+
 
   const sendMessage = async (event) => {
     // event.preventDefault();
@@ -99,7 +128,7 @@ const Chat = (props) => {
         );
 
         console.log(data);
-
+        socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (error) {
         toast.error("failed to send the message");
@@ -126,8 +155,8 @@ const Chat = (props) => {
                 <UpdateGroupChatModal
                   fetchAgain={props.fetchAgain}
                   setFetchAgain={props.setFetchAgain}
-                  fetchMessages= {fetchMessages} //added it 
-                /> 
+                  fetchMessages={fetchMessages} //added it
+                />
               </>
             )}
 
@@ -158,7 +187,7 @@ const Chat = (props) => {
       <>
         {selectedChat ? (
           <div className="center">
-            <SingleChat messages={messages}/>
+            <SingleChat messages={messages} />
             {/* <div ref={endRef}></div> */}
           </div>
         ) : (

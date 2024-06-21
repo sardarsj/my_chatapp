@@ -1,12 +1,28 @@
 import React, { useEffect, useState } from "react";
 import "../chat.css";
 import { ChatState } from "../../Context/ChatProvider";
-import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from "../../../config/ChatLogics";
+import {
+  isLastMessage,
+  isSameSender,
+  isSameSenderMargin,
+  isSameUser,
+} from "../../../config/ChatLogics";
+import io from 'socket.io-client';
+
+// const ENDPOINT = "http://localhost:5000";
+// var socket, selectedChatCompare;
 
 const SingleChat = ({ messages }) => {
-
   const { getUserData, setUserData, selectedChat } = ChatState();
   const [user, setUser] = useState(getUserData());
+  const [socketConnected, setSocketConnected] = useState(false);
+
+  // useEffect(() => {
+  //   socket = io(ENDPOINT);
+  //   socket.emit("setup", user);
+  //   socket.on("connection", () => setSocketConnected(true));
+  // }, []);
+
   return (
     <>
       {messages &&
@@ -16,21 +32,27 @@ const SingleChat = ({ messages }) => {
               isLastMessage(messages, i, user._id)) && (
               <span label={m.sender.name} placement="bottom-start" hasArrow>
                 {/* instead of div he used avatar  */}
-                <div
-                  mt="7px"
-                  mr={1}
-                  size="sm"
-                  cursor="pointer"
-                  name={m.sender.name}
-                  src={m.sender.pic}
-                >
+                <div>
+                  <img
+                    src={m.sender.pic}
+                    name={m.sender.name}
+                    style={{
+                      cursor: "pointer",
+                      height: "40px",
+                      width: "40px",
+                      borderRadius: "50%",
+                      marginRight: "5px"
+                    }}
+                  />
                 </div>
               </span>
             )}
             <span
               style={{
                 backgroundColor: `${
-                  m.sender._id === user._id ? "rgb(123, 67, 179)" : "rgb(140, 24, 90)"
+                  m.sender._id === user._id
+                    ? "rgb(123, 67, 179)"
+                    : "rgb(140, 24, 90)"
                 }`,
                 marginLeft: isSameSenderMargin(messages, m, i, user._id),
                 marginTop: isSameUser(messages, m, i, user._id) ? 3 : 10,
