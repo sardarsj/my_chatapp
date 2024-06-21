@@ -30,11 +30,10 @@ app.use(errorHandler);
 const PORT = process.env.BACKEND_PORT || 5000;
 const server = app.listen(PORT, console.log(`Server is running on ${PORT}`));
 
-
 //Initializing socket.io
 const io = require("socket.io")(server, {
-  pingTimeout: 60000, 
-  cors:{
+  pingTimeout: 60000,
+  cors: {
     origin: "http://localhost:3000",
   },
 });
@@ -42,7 +41,7 @@ const io = require("socket.io")(server, {
 io.on("connection", (socket) => {
   console.log("Connected to socket.io");
 
-//creating user room
+  //creating user room
   socket.on("setup", (userData) => {
     socket.join(userData._id);
     // console.log(userData._id);
@@ -54,18 +53,19 @@ io.on("connection", (socket) => {
     console.log("User joined Room: " + room);
   });
 
-  socket.on('new message', (newMessageReceived) => {
+  socket.on("typing", (room) => socket.in(room).emit("typing"));
+  socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
+
+  socket.on("new message", (newMessageReceived) => {
     var chat = newMessageReceived.chat;
 
-    if(!chat.users) return console.log("chat.users not defined");
+    if (!chat.users) return console.log("chat.users not defined");
 
-    chat.users.forEach(user => {
-      if(user._id == newMessageReceived.sender._id) return;
+    chat.users.forEach((user) => {
+      if (user._id == newMessageReceived.sender._id) return;
 
       socket.in(user._id).emit("message received", newMessageReceived);
-
-
     });
     //logic for: if I send a message in group, other four get it not me
-  })
-})
+  });
+});

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../chat.css";
 import { ChatState } from "../../Context/ChatProvider";
 import {
@@ -7,21 +7,18 @@ import {
   isSameSenderMargin,
   isSameUser,
 } from "../../../config/ChatLogics";
-import io from 'socket.io-client';
-
-// const ENDPOINT = "http://localhost:5000";
-// var socket, selectedChatCompare;
+import io from "socket.io-client";
 
 const SingleChat = ({ messages }) => {
   const { getUserData, setUserData, selectedChat } = ChatState();
   const [user, setUser] = useState(getUserData());
   const [socketConnected, setSocketConnected] = useState(false);
 
-  // useEffect(() => {
-  //   socket = io(ENDPOINT);
-  //   socket.emit("setup", user);
-  //   socket.on("connection", () => setSocketConnected(true));
-  // }, []);
+  const endRef = useRef(null);
+
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   return (
     <>
@@ -41,7 +38,7 @@ const SingleChat = ({ messages }) => {
                       height: "40px",
                       width: "40px",
                       borderRadius: "50%",
-                      marginRight: "5px"
+                      marginRight: "5px",
                     }}
                   />
                 </div>
@@ -62,6 +59,7 @@ const SingleChat = ({ messages }) => {
               }}
             >
               {m.content}
+              <div ref={endRef}></div>
             </span>
           </div>
         ))}

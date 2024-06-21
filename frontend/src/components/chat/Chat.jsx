@@ -9,6 +9,8 @@ import UpdateGroupChatModal from "../miscellaneous/UpdateGroupChatModal";
 import axios from "axios";
 import { toast } from "react-toastify";
 import io from "socket.io-client";
+import Lottie from "lottie-react";
+import animationData from "../../animations/typing.json";
 
 const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
@@ -22,7 +24,8 @@ const Chat = (props) => {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [socketConnected, setSocketConnected] = useState(false);
-
+  const [typing, setTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   //copied from details.jsx
   const {
     getUserData,
@@ -54,8 +57,19 @@ const Chat = (props) => {
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", user);
-    socket.on("connection", () => setSocketConnected(true));
+    socket.on("connected", () => setSocketConnected(true));
+    socket.on("typing", () => setIsTyping(true));
+    socket.on("stop typing", () => setIsTyping(false));
   }, []);
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   const handleEmoji = (e) => {
     setText((prev) => prev + e.emoji);
@@ -93,21 +107,23 @@ const Chat = (props) => {
     selectedChatCompare = selectedChat;
   }, [selectedChat]); //whenever user changes chat it will run
 
-  useEffect(() =>  {
+  useEffect(() => {
     socket.on("message received", (newMessageReceived) => {
-      if(!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id ){
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare._id !== newMessageReceived.chat._id
+      ) {
         //give notification
-      }else{
+      } else {
         setMessages([...messages, newMessageReceived]);
       }
     });
-  })
-
-
+  });
 
   const sendMessage = async (event) => {
     // event.preventDefault();
     if (event.key === "Enter" && newMessage) {
+      socket.emit("stop  typing", selectedChat._id);
       try {
         const messageContent = newMessage;
         const config = {
@@ -138,6 +154,28 @@ const Chat = (props) => {
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
+
+    //typing indication logic
+
+    if (!socketConnected) return;
+
+    if (!typing) {
+      setTyping(true);
+      socket.emit("typing", selectedChat._id);
+    }
+
+    let lastTypingTime = new Date().getTime();
+    var timerLength = 3000;
+
+    setTimeout(() => {
+      var timeNow = new Date().getTime();
+      var timeDiff = timeNow - lastTypingTime;
+
+      if (timeDiff >= timerLength && typing) {
+        socket.emit("stop typing", selectedChat._id);
+        setTyping(false);
+      }
+    }, timerLength);
   };
 
   return (
@@ -200,11 +238,24 @@ const Chat = (props) => {
       {/* keyboard starts from here */}
       <div className="bottom">
         <form onKeyDown={sendMessage}>
+          {isTyping ? (
+            <div>
+              {/* <Lottie
+                options={defaultOptions}
+                // height={50}
+                width={70}
+                style={{ marginBottom: 15, marginLeft: 0 }}
+              /> */}
+              Typing hri h....
+            </div>
+          ) : (
+            <></>
+          )}
           <input
             type="text"
             placeholder="Enter a Message..."
-            onChange={typingHandler}
             value={newMessage}
+            onChange={typingHandler}
             required
           />
         </form>
