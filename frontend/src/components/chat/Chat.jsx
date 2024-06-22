@@ -187,6 +187,8 @@ const Chat = (props) => {
 
             {/* <img src={selectedChat.pic} alt="" /> */}
             {/*<img src="./avatar.png" alt="" />*/}
+
+            {/* here the user pic is not displaying */}
             {!selectedChat.isGroupChat ? <img src={user.pic} /> : <Avatar name={selectedChat.chatName[0]} size="medium"/>}
             <div className="texts">
               <span>{!selectedChat.isGroupChat ? getSender(user, selectedChat.users) : selectedChat.chatName}</span>

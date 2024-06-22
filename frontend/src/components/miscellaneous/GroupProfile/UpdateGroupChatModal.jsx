@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./UpdateGroupdChatModal.css"
+import "./UpdateGroupdChatModal.css";
 import { ChatState } from "../../Context/ChatProvider";
 import UserBadgeItem from "../../userAvatar/UserBadgeItem";
 import axios from "axios";
@@ -13,10 +13,17 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [renameLoading, setRenameLoading] = useState(false);
+  const [searchUser, setSearchUser] = useState(false);
 
   // const {selectedChat, setSelectedChat, user } = ChatState();
-  const { getUserData, setUserData, selectedChat, setSelectedChat, chats, setChats } =
-    ChatState();
+  const {
+    getUserData,
+    setUserData,
+    selectedChat,
+    setSelectedChat,
+    chats,
+    setChats,
+  } = ChatState();
   const [user, setUser] = useState(getUserData());
 
   const handleRemove = async (user1) => {
@@ -43,7 +50,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
       user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
       setFetchAgain(!fetchAgain);
       fetchMessages(); //added so that after a user is removed all the chats refreshes
-      setLoading(false);  
+      setLoading(false);
     } catch (error) {
       toast.error("Error occured");
       setLoading(false);
@@ -102,7 +109,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         config
       );
       setSelectedChat(data);
-      const idx = chats.findIndex(chat => chat._id === data._id);
+      const idx = chats.findIndex((chat) => chat._id === data._id);
       const updatedChats = [...chats];
       updatedChats[idx] = data;
       setChats(updatedChats);
@@ -149,25 +156,48 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         <div className="userListHeader">
           <h3>Members ({selectedChat.users.length})</h3>
           {/*Add functionality to add user*/}
-          <img src="../public/plus.png" alt="" onClick={() => console.log("Add User")} />
+          <img
+            src={searchUser ? "./minus.png" : "./plus.png"}
+            alt=""
+            onClick={() => setSearchUser((prev) => !prev)}
+          />
         </div>
         <div className="userList">
-          <div style={{display: 'flex', alignItems: 'center', padding: '8px 0'}}>
-            <img style={{width: '48px', height: '48px', marginRight: '16px'}} src={user.pic} alt="" />
-            <span>You</span> 
-            {user._id === selectedChat.groupAdmin._id && <button style={{marginLeft: 'auto', padding: '4px 8px', borderRadius: '6px', backgroundColor: 'green', color: 'white'}}>Admin</button>}
+          <div
+            style={{ display: "flex", alignItems: "center", padding: "8px 0" }}
+          >
+            <img
+              style={{ width: "48px", height: "48px", marginRight: "16px" }}
+              src={user.pic}
+              alt=""
+            />
+            <span>You</span>
+            {user._id === selectedChat.groupAdmin._id && (
+              <button
+                style={{
+                  marginLeft: "auto",
+                  padding: "4px 8px",
+                  borderRadius: "6px",
+                  backgroundColor: "green",
+                  color: "white",
+                }}
+              >
+                Admin
+              </button>
+            )}
           </div>
-          {selectedChat.users.map((u) => (
-            u._id !== user._id && (
-              <UserBadgeItem
-                key={user._id}
-                user={u}
-                currentUser = {user._id}
-                admin={selectedChat.groupAdmin._id}
-                handleFunction={() => handleRemove(u)}
-              />
-            )
-          ))}
+          {selectedChat.users.map(
+            (u) =>
+              u._id !== user._id && (
+                <UserBadgeItem
+                  key={user._id}
+                  user={u}
+                  currentUser={user._id}
+                  admin={selectedChat.groupAdmin._id}
+                  handleFunction={() => handleRemove(u)}
+                />
+              )
+          )}
         </div>
       </div>
       <form className="updateChatName">
@@ -179,13 +209,17 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         />
         <button onClick={handleRename}>Update</button>
       </form>
-      {/*<form>
-        <input
-          type="text"
-          placeholder="Add User to group"
-          onChange={(e) => handleSearch(e.target.value)}
-        />
-      </form>*/}
+      {/* add User functionality */}
+      {searchUser && (
+        <form className="updateChatName" style={{ width: "100%" }}>
+          <input
+            type="text"
+            placeholder="Add more users"
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+        </form>
+      )}
+
       {loading ? (
         <div>Loading in progress...</div>
       ) : (
@@ -198,12 +232,21 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         ))
       )}
 
-      {user._id !== selectedChat.groupAdmin._id && <button
-        onClick={() => handleRemove(user)}
-        style={{ color: "white", backgroundColor: "red" , width: '100%', padding: '8px 0', borderRadius: '8px', marginTop: 'auto' }}
-      >
-        Leave Group
-      </button>}
+      {user._id !== selectedChat.groupAdmin._id && (
+        <button
+          onClick={() => handleRemove(user)}
+          style={{
+            color: "white",
+            backgroundColor: "red",
+            width: "100%",
+            padding: "8px 0",
+            borderRadius: "8px",
+            marginTop: "auto",
+          }}
+        >
+          Leave Group
+        </button>
+      )}
     </div>
   );
 };

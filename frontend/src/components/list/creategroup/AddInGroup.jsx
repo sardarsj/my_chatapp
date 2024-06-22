@@ -17,22 +17,12 @@ const AddInGroup = ({ children }) => {
     const userData = getUserData();
     setUser(userData);
   }, []);
-  //copied from details.jsx
-
-  // const { user, setSelectedChat } = ChatState();
-
-  // new use states
 
   const [groupChatName, setGroupChatName] = useState();
   const [selectedUsers, setselectedUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
-  // const [loadingChat, setLoadingChat] = useState(false);
-
-  // new use states
-
-  // const { user, chats, setChats } = ChatState();
 
   const handleSubmit = async (e) => {
     if (!groupChatName || !selectedUsers) {
@@ -45,7 +35,7 @@ const AddInGroup = ({ children }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      
+
       const { data } = await axios.post(
         `http://localhost:5000/api/chat/group`,
 
@@ -137,21 +127,22 @@ const AddInGroup = ({ children }) => {
         {loading ? (
           <div>Loading</div>
         ) : (
-            searchResult
-              ?.slice(0, 4)
-              .map((user) => (
-                <UserListItem
-                  key={user._id}
-                  user={user}
-                  handleFunction={() => handleGroup(user)}
-                />
-              ))
-
+          searchResult
+            ?.slice(0, 4)
+            .map((user) => (
+              <UserListItem
+                key={user._id}
+                user={user}
+                handleFunction={() => handleGroup(user)}
+              />
+            ))
         )}
       </div>
 
       {/* loading horhi h that we can use spinner or something */}
-      <button className="createGroupBtn" onClick={handleSubmit}>Create Chat</button>
+      <button className="createGroupBtn" onClick={handleSubmit}>
+        Create Chat
+      </button>
 
       <Notification />
     </div>
