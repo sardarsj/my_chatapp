@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "./register.css";
 import { toast } from "react-toastify";
-import { supabase } from "../../../lib/supabase";
 import { Link, unstable_HistoryRouter } from "react-router-dom";
 import axios from "axios";
 

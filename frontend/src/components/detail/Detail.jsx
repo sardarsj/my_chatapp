@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./detail.css";
 import { ChatState } from "../Context/ChatProvider";
 import { useNavigate } from "react-router-dom";
-import ProfileModal from "../miscellaneous/ProfileModal";
-import UpdateGroupChatModal from "../miscellaneous/UpdateGroupChatModal";
+import ProfileModal from "../miscellaneous/SingleProfile/ProfileModal";
+import UpdateGroupChatModal from "../miscellaneous/GroupProfile/UpdateGroupChatModal";
 import { getSender, getSenderFull } from "../../config/ChatLogics";
 
 const Detail = (props) => {
@@ -21,33 +21,23 @@ const Detail = (props) => {
   return (
     <div className="detail">
       <div className="user">
-        {selectedChat && (
-          <div className="user">
-            <img src="./avatar.png" alt="" />
-
-            {!selectedChat.isGroupChat ? (
-              <>
-                {getSender(user, selectedChat.users)}
-                <ProfileModal user={getSenderFull(user, selectedChat.users)} />
-              </>
-            ) : (
-              <>
-                <UpdateGroupChatModal
-                  fetchAgain={props.fetchAgain}
-                  setFetchAgain={props.setFetchAgain}
-                />
-              </>
-            )}
-
-            {/* <img src={user.pic} alt="" /> */}
-            {/* <img src="./avatar.png" alt="" /> */}
-            <div className="texts">
-              {/* <span>{selectedChat.chatName}</span> */}
-              {/* <span>{selectedChat.name}</span> */}
-              {/* <p>Lorem ipsum dolor sit amet.</p> */}
-            </div>
-          </div>
-        )}
+        {selectedChat &&
+          (!selectedChat.isGroupChat ? (
+            <>
+              {/* {getSender(user, selectedChat.users)} */}
+              <ProfileModal user={getSenderFull(user, selectedChat.users)} />
+              {/* {<ProfileModal user = {getSenderFull(user, selectedChat.users, selectedChat.pic)} />} */}
+              {/* {getSender(user, selectedChat.users)}
+              <ProfileModal user={getSenderFull(user, selectedChat.users)} /> */}
+            </>
+          ) : (
+            <>
+              <UpdateGroupChatModal
+                fetchAgain={props.fetchAgain}
+                setFetchAgain={props.setFetchAgain}
+              />
+            </>
+          ))}
         {/* pic need to be pushed during registration */}
         {/* <img src="/public/avatar.png" alt="" /> */}
         {/* <img src={user.pic} alt="" /> */}
@@ -130,9 +120,9 @@ const Detail = (props) => {
           </div>
         </div> */}
         {/* <button>Block User</button> */}
-        <button className="logout" onClick={logoutHandler}>
+        {/*<button className='logout' onClick={logoutHandler}>
           LogOut
-        </button>
+        </button>*/}
       </div>
     </div>
   );

@@ -1,0 +1,21 @@
+.avatar {
+    border-radius: 50%;
+    background-color: #111928;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #a6a6a6;
+    
+    &.large {
+      font-size: 40px;
+      width: 100px;
+      height: 100px;
+    }
+  
+    &.medium {
+      width: 60px;
+      height: 60px;
+      font-size: 32px;
+    }
+  }
+  

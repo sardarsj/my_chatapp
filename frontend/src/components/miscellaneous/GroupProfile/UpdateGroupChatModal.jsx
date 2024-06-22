@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { ChatState } from "../Context/ChatProvider";
-import UserBadgeItem from "../userAvatar/UserBadgeItem";
+import "./UpdateGroupdChatModal.css"
+import { ChatState } from "../../Context/ChatProvider";
+import UserBadgeItem from "../../userAvatar/UserBadgeItem";
 import axios from "axios";
 import { toast } from "react-toastify";
-import UserListItem from "../userAvatar/UserListItem";
+import UserListItem from "../../userAvatar/UserListItem";
+import Avatar from "../Avatar/Avatar";
 
 const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   const [groupChatName, setGroupChatName] = useState();
@@ -13,7 +15,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   const [renameLoading, setRenameLoading] = useState(false);
 
   // const {selectedChat, setSelectedChat, user } = ChatState();
-  const { getUserData, setUserData, selectedChat, setSelectedChat } =
+  const { getUserData, setUserData, selectedChat, setSelectedChat, chats, setChats } =
     ChatState();
   const [user, setUser] = useState(getUserData());
 
@@ -100,6 +102,10 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         config
       );
       setSelectedChat(data);
+      const idx = chats.findIndex(chat => chat._id === data._id);
+      const updatedChats = [...chats];
+      updatedChats[idx] = data;
+      setChats(updatedChats);
       setFetchAgain(!fetchAgain);
       setRenameLoading(false);
     } catch (error) {
@@ -134,18 +140,37 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   };
 
   return (
-    <div>
-      <h2>{selectedChat.chatName}</h2>
-      <span>
-        {selectedChat.users.map((u) => (
-          <UserBadgeItem
-            key={user._id}
-            user={u}
-            handleFunction={() => handleRemove(u)}
-          />
-        ))}
-      </span>
-      <form>
+    <div className="profile">
+      <div className="profileHeader">
+        <Avatar name={selectedChat.chatName[0]} size="large" />
+        <h2>{selectedChat.chatName}</h2>
+      </div>
+      <div className="users">
+        <div className="userListHeader">
+          <h3>Members ({selectedChat.users.length})</h3>
+          {/*Add functionality to add user*/}
+          <img src="../public/plus.png" alt="" onClick={() => console.log("Add User")} />
+        </div>
+        <div className="userList">
+          <div style={{display: 'flex', alignItems: 'center', padding: '8px 0'}}>
+            <img style={{width: '48px', height: '48px', marginRight: '16px'}} src={user.pic} alt="" />
+            <span>You</span> 
+            {user._id === selectedChat.groupAdmin._id && <button style={{marginLeft: 'auto', padding: '4px 8px', borderRadius: '6px', backgroundColor: 'green', color: 'white'}}>Admin</button>}
+          </div>
+          {selectedChat.users.map((u) => (
+            u._id !== user._id && (
+              <UserBadgeItem
+                key={user._id}
+                user={u}
+                currentUser = {user._id}
+                admin={selectedChat.groupAdmin._id}
+                handleFunction={() => handleRemove(u)}
+              />
+            )
+          ))}
+        </div>
+      </div>
+      <form className="updateChatName">
         <input
           type="text"
           placeholder="Chat Name"
@@ -154,13 +179,13 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         />
         <button onClick={handleRename}>Update</button>
       </form>
-      <form>
+      {/*<form>
         <input
           type="text"
           placeholder="Add User to group"
           onChange={(e) => handleSearch(e.target.value)}
         />
-      </form>
+      </form>*/}
       {loading ? (
         <div>Loading in progress...</div>
       ) : (
@@ -173,12 +198,12 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         ))
       )}
 
-      <button
+      {user._id !== selectedChat.groupAdmin._id && <button
         onClick={() => handleRemove(user)}
-        style={{ color: "white", backgroundColor: "red" }}
+        style={{ color: "white", backgroundColor: "red" , width: '100%', padding: '8px 0', borderRadius: '8px', marginTop: 'auto' }}
       >
         Leave Group
-      </button>
+      </button>}
     </div>
   );
 };

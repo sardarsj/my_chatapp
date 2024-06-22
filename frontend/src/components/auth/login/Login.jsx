@@ -3,7 +3,6 @@ import "./login.css";
 import axios from "axios";
 
 import { toast } from "react-toastify";
-import { supabase } from "../../../lib/supabase";
 import { Link } from "react-router-dom";
 import Notification from "../../notification/Notification";
 import { useNavigate } from "react-router-dom";

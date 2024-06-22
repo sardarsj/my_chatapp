@@ -1,0 +1,73 @@
+.profile {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .profileHeader {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-bottom: 1px solid grey;
+
+    h2 {
+      margin: 12px 0;
+    }
+  }
+
+  .users {
+    padding: 16px 0;
+    flex: 1;
+
+    .userListHeader {
+      display: flex;
+      justify-content: space-between;
+
+      h3 {
+        padding: 4px 0;
+        margin-bottom: 8px;
+      }
+
+      img {
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .userList {
+      max-height: 200px;
+      overflow: auto;
+    }
+  }
+  .updateChatName {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    input {
+      height: 32px;
+      background-color: rgba(17, 25, 40, 0.5);
+      border: none;
+      outline: none;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      width: 170px;
+    }
+
+    button {
+      background-color: #5183fe;
+      height: 32px;
+      padding: 16px 12px;
+      border-radius: 10px;
+      color: white;
+      font-weight: 500;
+      margin-left: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

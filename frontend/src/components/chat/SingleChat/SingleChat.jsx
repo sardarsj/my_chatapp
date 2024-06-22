@@ -18,16 +18,17 @@ const SingleChat = ({ messages }) => {
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  }, [endRef.current]);
 
   return (
     <>
       {messages &&
         messages.map((m, i) => (
-          <div style={{ display: "flex" }} key={m._id}>
+          <div ref={(i === messages.length - 1) ? endRef : null} style={{ display: "flex" }} key={m._id}>
             {(isSameSender(messages, m, i, user._id) ||
               isLastMessage(messages, i, user._id)) && (
-              <span label={m.sender.name} placement="bottom-start" hasArrow>
+              <span label={m.sender.name}>
+                {console.log("Message: ", m)}
                 {/* instead of div he used avatar  */}
                 <div>
                   <img
@@ -59,7 +60,7 @@ const SingleChat = ({ messages }) => {
               }}
             >
               {m.content}
-              <div ref={endRef}></div>
+              {/*<div ref={endRef}></div>*/}
             </span>
           </div>
         ))}

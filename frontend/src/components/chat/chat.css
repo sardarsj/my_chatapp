@@ -126,15 +126,19 @@
             height: 20px;
             cursor: pointer;
         }
-        input{
+        form{
             flex: 1;
-            background-color: rgba(17, 25, 40, 0.5);
-            border: none;
-            outline: none;
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            font-size: 16px;
+            
+            input{
+                width: 100%;
+                background-color: rgba(17, 25, 40, 0.5);
+                border: none;
+                outline: none;
+                color: white;
+                padding: 20px;
+                border-radius: 10px;
+                font-size: 16px;
+            }
         }
 
         .emoji{

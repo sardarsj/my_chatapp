@@ -42,7 +42,6 @@ const ChatList = ({fetchAgain}) => {
         "http://localhost:5000/api/chat",
         config
       );
-       console.log(data);
       setChats(data);
       setSelectedChat(data[0]);
     } catch (error) {
@@ -74,9 +73,10 @@ const ChatList = ({fetchAgain}) => {
       <div>
         {chats ? (
           <div>
+            {console.log(chats[0])}
             {chats.map((chat) => (
               <div
-                className="item"
+                className={selectedChat._id === chat._id ? "item selected" : "item"}
                 onClick={() => setSelectedChat(chat)}
                 key={chat._id}
               >

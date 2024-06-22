@@ -45,7 +45,7 @@ const AddInGroup = ({ children }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-
+      
       const { data } = await axios.post(
         `http://localhost:5000/api/chat/group`,
 
@@ -107,9 +107,9 @@ const AddInGroup = ({ children }) => {
   };
 
   return (
-    <div className="addUser">
+    <div className="addUserInGroup">
       <span>{children}</span>
-      <span>Create Group Chat</span>
+      <h3>Create Group Chat</h3>
       <form>
         <input
           type="text"
@@ -123,7 +123,7 @@ const AddInGroup = ({ children }) => {
         />
       </form>
 
-      <div>
+      <div className="selectUserModal">
         {selectedUsers.map((u) => (
           <UserBadgeItem
             key={user._id}
@@ -133,22 +133,25 @@ const AddInGroup = ({ children }) => {
         ))}
       </div>
 
-      {loading ? (
-        <div>Loading</div>
-      ) : (
-        searchResult
-          ?.slice(0, 4)
-          .map((user) => (
-            <UserListItem
-              key={user._id}
-              user={user}
-              handleFunction={() => handleGroup(user)}
-            />
-          ))
-      )}
+      <div className="searchedUser">
+        {loading ? (
+          <div>Loading</div>
+        ) : (
+            searchResult
+              ?.slice(0, 4)
+              .map((user) => (
+                <UserListItem
+                  key={user._id}
+                  user={user}
+                  handleFunction={() => handleGroup(user)}
+                />
+              ))
+
+        )}
+      </div>
 
       {/* loading horhi h that we can use spinner or something */}
-      <button onClick={handleSubmit}>Create Chat</button>
+      <button className="createGroupBtn" onClick={handleSubmit}>Create Chat</button>
 
       <Notification />
     </div>

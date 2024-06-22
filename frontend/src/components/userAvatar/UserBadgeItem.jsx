@@ -1,30 +1,13 @@
 import React, { useEffect } from "react";
 // import { ChatState } from "../Context/ChatProvider";
 
-const UserBadgeItem = ({ user, handleFunction }) => {
-
+const UserBadgeItem = ({ user, handleFunction, admin, currentUser }) => {
   return (
-    <div>
-      <span
-        style={{
-          cursor: "pointer",
-          padding: "5px 10px",
-          margin: "5px",
-          height: "33px",
-          width: "70px",
-          backgroundColor: "rgb(82, 120, 159)",
-          color: "white",
-          borderRadius: "5px",
-          fontSize: "14px",
-          fontWeight: "bold",
-          display: "flex",
-          flexDirection:"row"
-        }}
-      >
-        {user.name}
-        
-        <img src="./minus.png" alt="" onClick={handleFunction} />
-      </span>
+    <div style={{display: 'flex', alignItems: 'center', padding: '8px 0'}}>
+      <img style={{width: '48px', height: '48px', marginRight: '16px'}} src={user.pic} alt="" />
+      <span>{user.name}</span>
+      {/*Check for button not to show on admin user*/}
+      {currentUser === admin && <button style={{marginLeft: 'auto', padding: '4px 8px', borderRadius: '6px', backgroundColor: 'red', color: 'white' ,cursor: 'pointer'}} onClick={handleFunction}>Remove</button>}
     </div>
   );
 };
