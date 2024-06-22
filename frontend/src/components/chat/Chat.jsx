@@ -4,7 +4,7 @@ import { ChatState } from "../Context/ChatProvider";
 import { useEffect, useRef, useState } from "react";
 import SingleChat from "./SingleChat/SingleChat";
 import { getSender, getSenderFull } from "../../config/ChatLogics";
-import ProfileModal from "../miscellaneous/ProfileModal";
+import ProfileModal from "../miscellaneous/SingleProfile/ProfileModal";
 import UpdateGroupChatModal from "../miscellaneous/GroupProfile/UpdateGroupChatModal";
 import axios from "axios";
 import { toast } from "react-toastify";

@@ -16,14 +16,28 @@
       object-fit: cover;
     }
   }
-  .icons{
+  .icons {
     display: flex;
     gap: 20px;
-    img{
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-        
+    img {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+  }
+  .btncls {
+    position: fixed;
+    top: 60px;
+    left: 278px;
+
+    button {
+      background-color: #5183fe;
+      color: white;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
     }
   }
 }

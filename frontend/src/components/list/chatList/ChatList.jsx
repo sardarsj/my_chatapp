@@ -9,7 +9,7 @@ import UserListItem from "../../userAvatar/UserListItem";
 import ChatListItem from "../../userAvatar/ChatListItem";
 import { getSender } from "../../../config/ChatLogics";
 
-const ChatList = ({fetchAgain}) => {
+const ChatList = ({ fetchAgain }) => {
   const [loadingChat, setLoadingChat] = useState(false);
   const [addMode, setAddMode] = useState(false);
 
@@ -76,7 +76,9 @@ const ChatList = ({fetchAgain}) => {
             {console.log(chats[0])}
             {chats.map((chat) => (
               <div
-                className={selectedChat._id === chat._id ? "item selected" : "item"}
+                className={
+                  selectedChat._id === chat._id ? "item selected" : "item"
+                }
                 onClick={() => setSelectedChat(chat)}
                 key={chat._id}
               >
