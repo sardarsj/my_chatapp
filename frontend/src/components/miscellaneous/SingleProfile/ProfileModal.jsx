@@ -7,8 +7,7 @@ const ProfileModal = ({ user, children }) => {
       <h4>{user.email}</h4>
 
     </div>
-        
-        
+               
     
   );
 };

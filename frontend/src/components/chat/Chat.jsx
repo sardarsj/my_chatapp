@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import SingleChat from "./SingleChat/SingleChat";
 import { getSender, getSenderFull } from "../../config/ChatLogics";
 import ProfileModal from "../miscellaneous/SingleProfile/ProfileModal";
+import ChatHeaderProfileModal from "../miscellaneous/SingleProfile/ChatHeaderProfileModal";
 import UpdateGroupChatModal from "../miscellaneous/GroupProfile/UpdateGroupChatModal";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -122,7 +123,7 @@ const Chat = (props) => {
   });
 
   const sendMessage = async (event) => {
-     event.preventDefault();
+    event.preventDefault();
     if (newMessage) {
       socket.emit("stop  typing", selectedChat._id);
       try {
@@ -184,16 +185,20 @@ const Chat = (props) => {
       <div className="top">
         {selectedChat && (
           <div className="user">
-
-            {/* <img src={selectedChat.pic} alt="" /> */}
-            {/*<img src="./avatar.png" alt="" />*/}
-
-            {/* here the user pic is not displaying */}
-            {!selectedChat.isGroupChat ? <img src={user.pic} /> : <Avatar name={selectedChat.chatName[0]} size="medium"/>}
+            {!selectedChat.isGroupChat ? (
+              <ChatHeaderProfileModal
+                user={getSenderFull(user, selectedChat.users)}
+              />
+            ) : (
+              <Avatar name={selectedChat.chatName[0]} size="medium" />
+            )}
             <div className="texts">
-              <span>{!selectedChat.isGroupChat ? getSender(user, selectedChat.users) : selectedChat.chatName}</span>
-              {/* <span>{selectedChat.sender}</span> */}
-              <p>Lorem ipsum dolor sit amet.</p>
+              <span>
+                {!selectedChat.isGroupChat
+                  ? <></>
+                  // ? getSender(user, selectedChat.users)
+                  : selectedChat.chatName}
+              </span>
             </div>
           </div>
         )}
@@ -246,16 +251,18 @@ const Chat = (props) => {
           />
         </form>
         <div className="emoji">
-           <img
-             src="./emoji.png"
-             alt=""
-             onClick={() => setOpen((prev) => !prev)}
-           />
-           <div className="picker">
-             <EmojiPicker open={open} onEmojiClick={handleEmoji} />
-           </div>
-         </div>
-         <button className="sendButton" onClick={sendMessage}>Send</button>
+          <img
+            src="./emoji.png"
+            alt=""
+            onClick={() => setOpen((prev) => !prev)}
+          />
+          <div className="picker">
+            <EmojiPicker open={open} onEmojiClick={handleEmoji} />
+          </div>
+        </div>
+        <button className="sendButton" onClick={sendMessage}>
+          Send
+        </button>
       </div>
     </div>
   );
@@ -277,14 +284,14 @@ export default Chat;
 //           onChange={typingHandler}
 
 //         />
-        // <div className="emoji">
-        //   <img
-        //     src="./emoji.png"
-        //     alt=""
-        //     onClick={() => setOpen((prev) => !prev)}
-        //   />
-        //   <div className="picker">
-        //     <EmojiPicker open={open} onEmojiClick={handleEmoji} />
-        //   </div>
-        // </div>
-        // <button className="sendButton" onClick={sendMessage}>Send</button>
+// <div className="emoji">
+//   <img
+//     src="./emoji.png"
+//     alt=""
+//     onClick={() => setOpen((prev) => !prev)}
+//   />
+//   <div className="picker">
+//     <EmojiPicker open={open} onEmojiClick={handleEmoji} />
+//   </div>
+// </div>
+// <button className="sendButton" onClick={sendMessage}>Send</button>
