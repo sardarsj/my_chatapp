@@ -18,7 +18,7 @@ const SingleChat = ({ messages }) => {
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [endRef.current]);
+  }, [messages]);
 
   return (
     <>
@@ -29,7 +29,7 @@ const SingleChat = ({ messages }) => {
               isLastMessage(messages, i, user._id)) && (
               <span label={m.sender.name}>
                 {console.log("Message: ", m)}
-                {/* instead of div he used avatar  */}
+                {/* instead of div the source used avatar  */}
                 <div>
                   <img
                     src={m.sender.pic}
