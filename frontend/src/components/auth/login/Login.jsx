@@ -82,7 +82,8 @@ const Login = () => {
   return (
     <div className="login">
       <div className="item">
-        <h2>Welcome back,</h2>
+        <h2>Log-In</h2>
+        {/* <h2>Welcome back,</h2> */}
         <form onSubmit={handleLogin}>
           <input
             type="text"
@@ -105,7 +106,7 @@ const Login = () => {
             alt="show"
           />
           <p>
-            Don't have an account? <Link to="/register">Register here</Link>
+          Create an account if you don't have one.
           </p>
           <button>Sign In</button>
         </form>

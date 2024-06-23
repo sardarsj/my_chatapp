@@ -4,7 +4,6 @@ const { protect } = require('../middleware/authMiddleware');
 const router = express.Router();
 
 // down below are basically controllers
-// did changes, if error occurs then comment out 8 and then comment in 9 & 10
 // router.route('/').post(registerUser).get(protect, allUsers);
 router.route("/").get(protect, allUsers);
 router.route("/").post(registerUser);

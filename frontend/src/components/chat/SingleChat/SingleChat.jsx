@@ -24,12 +24,16 @@ const SingleChat = ({ messages }) => {
     <>
       {messages &&
         messages.map((m, i) => (
-          <div ref={(i === messages.length - 1) ? endRef : null} style={{ display: "flex" }} key={m._id}>
+          <div
+            ref={i === messages.length - 1 ? endRef : null}
+            style={{ display: "flex", alignItems: "flex-start" }}
+            key={m._id}
+          >
             {(isSameSender(messages, m, i, user._id) ||
               isLastMessage(messages, i, user._id)) && (
               <span label={m.sender.name}>
                 {console.log("Message: ", m)}
-                {/* instead of div the source used avatar  */}
+                {/* instead of div the source  used avatar  */}
                 <div>
                   <img
                     src={m.sender.pic}

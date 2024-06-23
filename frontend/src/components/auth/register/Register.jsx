@@ -36,6 +36,8 @@ const Register = () => {
   //   }
   // };
 
+
+ 
   //uploading the picture as per roadside
   const postDetails = (pics) => {
     setLoading(true);
@@ -43,6 +45,7 @@ const Register = () => {
       toast.warning("Please upload image");
       return;
     }
+    
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
       const data = new FormData();
       data.append("file", pics);
@@ -55,6 +58,10 @@ const Register = () => {
         .then((res) => res.json())
         .then((data) => {
           setPic(data.url.toString());
+          setAvatar((prevAvatar) => ({
+            ...prevAvatar,
+            url: data.url.toString(),
+          }));
           setLoading(false);
         })
         .catch((err) => {
@@ -75,10 +82,17 @@ const Register = () => {
       return;
     }
 
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      toast.warning("Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.");
+      setPicLoading(false);
+      return;
+    } 
+
     // if (password !== confirmpassword) {
     //   toast.warning("Password does not match");
     // }
-    
+
     console.log(name, email, password, pic);
 
     try {
@@ -108,6 +122,8 @@ const Register = () => {
       toast.error("Error during registration");
       // setPicLoading(false);
     }
+
+    
 
     //supabase vaala code
     // const formData = new FormData(e.target);
@@ -173,9 +189,7 @@ const Register = () => {
             onClick={handleBoth}
             alt="show"
           />
-          <p>
-            Already have an account? <Link to="/login">Login here</Link>
-          </p>
+          <p>Login, if you already have an account</p>
           <button>Sign Up</button>
         </form>
       </div>
