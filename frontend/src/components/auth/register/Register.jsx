@@ -119,7 +119,7 @@ const Register = () => {
       //bhjnn lyiii
       navigate("/chats");
     } catch (error) {
-      toast.error("Error during registration");
+      toast.error("User already exists" );
       // setPicLoading(false);
     }
 

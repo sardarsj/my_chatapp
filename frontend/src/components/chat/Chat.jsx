@@ -224,7 +224,7 @@ const Chat = (props) => {
             {/* <div ref={endRef}></div> */}
           </div>
         ) : (
-          <span>click on the user to start chatting</span>
+          <h2 style={{position:"relative", top:"74px", left: "200px"}}>click on the user to start chatting</h2>
         )}
       </>
 
@@ -250,7 +250,7 @@ const Chat = (props) => {
             onChange={typingHandler}
           />
         </form>
-        <div className="emoji">
+        {/* <div className="emoji">
           <img
             src="./emoji.png"
             alt=""
@@ -259,7 +259,7 @@ const Chat = (props) => {
           <div className="picker">
             <EmojiPicker open={open} onEmojiClick={handleEmoji} />
           </div>
-        </div>
+        </div> */}
         <button className="sendButton" onClick={sendMessage}>
           Send
         </button>
