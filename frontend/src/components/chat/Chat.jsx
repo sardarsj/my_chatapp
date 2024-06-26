@@ -23,10 +23,10 @@ var socket, selectedChatCompare;
 const Chat = (props) => {
   const { showChatPage, setShowChatPage } = props;
   const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState();
   const [open, setOpen] = useState(false);
-  const [text, setText] = useState("");
+  // const [text, setText] = useState("");
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
@@ -80,7 +80,7 @@ const Chat = (props) => {
   };
 
   const handleEmoji = (e) => {
-    setText((prev) => prev + e.emoji);
+    setNewMessage((prev) => prev + e.emoji);
     setOpen(false);
   };
 

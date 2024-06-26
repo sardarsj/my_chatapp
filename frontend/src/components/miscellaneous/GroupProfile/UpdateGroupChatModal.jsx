@@ -6,6 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import UserListItem from "../../userAvatar/UserListItem";
 import Avatar from "../Avatar/Avatar";
+import { confirmAlert } from 'react-confirm-alert'; 
 
 const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   const [groupChatName, setGroupChatName] = useState();
@@ -32,29 +33,70 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
       return;
     }
 
-    try {
-      setLoading(true);
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
-      const { data } = await axios.put(
-        "http://localhost:5000/api/chat/groupremove",
-        {
-          chatId: selectedChat._id,
-          userId: user1._id,
-        },
-        config
-      );
-      user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
-      setFetchAgain(!fetchAgain);
-      fetchMessages(); //added so that after a user is removed all the chats refreshes
-      setLoading(false);
-    } catch (error) {
-      toast.error("Error occured");
-      setLoading(false);
-    }
+    // confirmAlert({
+    //   title: 'Confirm to remove',
+    //   message: 'Are you sure you want to remove this user?',
+    //   buttons: [
+    //     {
+    //       label: 'Yes',
+    //       onClick: async () => {
+    //         try {
+    //           setLoading(true);
+    //           const config = {
+    //             headers: {
+    //               Authorization: `Bearer ${user.token}`,
+    //             },
+    //           };
+    //           const { data } = await axios.put(
+    //             "http://localhost:5000/api/chat/groupremove",
+    //             {
+    //               chatId: selectedChat._id,
+    //               userId: user1._id,
+    //             },
+    //             config
+    //           );
+    //           user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
+    //           setFetchAgain(!fetchAgain);
+    //           fetchMessages(); //added so that after a user is removed all the chats refreshes
+    //           setLoading(false);
+    //         } catch (error) {
+    //           toast.error("Error occured");
+    //           setLoading(false);
+    //         }
+    //       }
+    //     },
+    //     {
+    //       label: 'No',
+    //       onClick: () => {} // Do nothing if "No" is clicked
+    //     }
+    //   ]
+    // });
+
+
+    //here is my original code
+    // try {
+    //   setLoading(true);
+    //   const config = {
+    //     headers: {
+    //       Authorization: `Bearer ${user.token}`,
+    //     },
+    //   };
+    //   const { data } = await axios.put(
+    //     "http://localhost:5000/api/chat/groupremove",
+    //     {
+    //       chatId: selectedChat._id,
+    //       userId: user1._id,
+    //     },
+    //     config
+    //   );
+    //   user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
+    //   setFetchAgain(!fetchAgain);
+    //   fetchMessages(); //added so that after a user is removed all the chats refreshes
+    //   setLoading(false);
+    // } catch (error) {
+    //   toast.error("Error occured");
+    //   setLoading(false);
+    // }
   };
 
   const handleAddUser = async (user1) => {
@@ -215,9 +257,11 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
           color: "white",
           backgroundColor: "red",
           width: "100%",
-          padding: "8px 0",
+          padding: "8px 10px",
           borderRadius: "8px",
           marginTop: "auto",
+          marginBottom: "15px"
+
         }}
       >
         Leave Group
