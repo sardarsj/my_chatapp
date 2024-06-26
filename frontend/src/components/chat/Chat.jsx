@@ -13,6 +13,8 @@ import io from "socket.io-client";
 import Lottie from "lottie-react";
 import animationData from "../../animations/typing.json";
 import Avatar from "../miscellaneous/Avatar/Avatar";
+import { Effect } from "react-notification-badge";
+import NotificationBadge from "react-notification-badge";
 
 const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
@@ -28,6 +30,8 @@ const Chat = (props) => {
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [addbtn, setAddbtn] = useState(false);
+
   //copied from details.jsx
   const {
     getUserData,
@@ -36,6 +40,8 @@ const Chat = (props) => {
     setSelectedChat,
     chats,
     setChats,
+    notification,
+    setNotification,
   } = ChatState();
 
   const [user, setUser] = useState(getUserData());
@@ -46,7 +52,7 @@ const Chat = (props) => {
   //copied from details.jsx
 
   useEffect(() => {
-    console.log("Selected Chat: ", selectedChat);
+    // console.log("Selected Chat: ", selectedChat);
   }, [selectedChat]);
 
   // const endRef = useRef(null);
@@ -109,13 +115,17 @@ const Chat = (props) => {
     selectedChatCompare = selectedChat;
   }, [selectedChat]); //whenever user changes chat it will run
 
+  // console.log(notification, '------------------')
   useEffect(() => {
     socket.on("message received", (newMessageReceived) => {
       if (
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessageReceived.chat._id
       ) {
-        //give notification
+        if (!notification.includes(newMessageReceived)) {
+          setNotification([newMessageReceived, ...notification]);
+          setFetchAgain(!fetchAgain);
+        }
       } else {
         setMessages([...messages, newMessageReceived]);
       }
@@ -145,7 +155,7 @@ const Chat = (props) => {
           config
         );
 
-        console.log(data);
+        // console.log(data);
         socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (error) {
@@ -194,17 +204,49 @@ const Chat = (props) => {
             )}
             <div className="texts">
               <span>
-                {!selectedChat.isGroupChat
-                  ? <></>
+                {!selectedChat.isGroupChat ? (
+                  <></>
+                ) : (
                   // ? getSender(user, selectedChat.users)
-                  : selectedChat.chatName}
+                  selectedChat.chatName
+                )}
               </span>
             </div>
           </div>
         )}
         <div className="icons">
-          <img src="./phone.png" alt="" />
-          <img src="./video.png" alt="" />
+          <div className="notification">
+            <img
+              src="./notification.png"
+              alt="notification button"
+              onClick={() => setAddbtn((prev) => !prev)}
+            />
+            <div className="count">
+              <NotificationBadge
+                count={notification.length}
+                effect={Effect.SCALE}
+              />
+            </div>
+
+            {addbtn && (
+              <div className="fullNotification">
+                {!notification.length && "No new message"}
+                {notification.map((notif) => (
+                  <span
+                    key={notif._id}
+                    onClick={() => {
+                      setSelectedChat(notif.chat);
+                      setNotification(notification.filter((n) => n !== notif));
+                    }}
+                  >
+                    {notif.chat.isGroupChat
+                      ? `New Message in ${notif.chat.chatName}`
+                      : `New Message from ${getSender(user, notif.chat.users)}`}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
           <img
             src="./info.png"
             alt=""
@@ -213,10 +255,6 @@ const Chat = (props) => {
         </div>
       </div>
 
-      {/* from here main chat portion starts */}
-
-      {/* <SingleChat fetchAgain={props.fetchAgain} setFetchAgain={props.setFetchAgain} /> */}
-
       <>
         {selectedChat ? (
           <div className="center">
@@ -224,7 +262,9 @@ const Chat = (props) => {
             {/* <div ref={endRef}></div> */}
           </div>
         ) : (
-          <h2 style={{position:"relative", top:"74px", left: "200px"}}>click on the user to start chatting</h2>
+          <h2 style={{ position: "relative", top: "74px", left: "200px" }}>
+            click on the user to start chatting
+          </h2>
         )}
       </>
 
