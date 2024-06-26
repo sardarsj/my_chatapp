@@ -209,6 +209,20 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         />
         <button onClick={handleRename}>Update</button>
       </form>
+      <button
+        onClick={() => handleRemove(user)}
+        style={{
+          color: "white",
+          backgroundColor: "red",
+          width: "100%",
+          padding: "8px 0",
+          borderRadius: "8px",
+          marginTop: "auto",
+        }}
+      >
+        Leave Group
+      </button>
+
       {/* add User functionality */}
       {searchUser && (
         <form className="updateChatName" style={{ width: "100%" }}>
@@ -230,22 +244,6 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
             handleFunction={() => handleAddUser(user)}
           />
         ))
-      )}
-
-      {user._id !== selectedChat.groupAdmin._id && (
-        <button
-          onClick={() => handleRemove(user)}
-          style={{
-            color: "white",
-            backgroundColor: "red",
-            width: "100%",
-            padding: "8px 0",
-            borderRadius: "8px",
-            marginTop: "auto",
-          }}
-        >
-          Leave Group
-        </button>
       )}
     </div>
   );
