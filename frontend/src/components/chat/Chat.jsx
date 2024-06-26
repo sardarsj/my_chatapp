@@ -235,6 +235,7 @@ const Chat = (props) => {
         <form onKeyDown={(e) => e.key === "Enter" && sendMessage(e)}>
           {isTyping && (
             <div>
+              typing...
               {/* <Lottie
                 options={defaultOptions}
                 // height={50}
@@ -250,7 +251,7 @@ const Chat = (props) => {
             onChange={typingHandler}
           />
         </form>
-        {/* <div className="emoji">
+        <div className="emoji">
           <img
             src="./emoji.png"
             alt=""
@@ -259,7 +260,7 @@ const Chat = (props) => {
           <div className="picker">
             <EmojiPicker open={open} onEmojiClick={handleEmoji} />
           </div>
-        </div> */}
+        </div>
         <button className="sendButton" onClick={sendMessage}>
           Send
         </button>

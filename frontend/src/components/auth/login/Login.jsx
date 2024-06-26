@@ -54,7 +54,8 @@ const Login = () => {
       // setLoading(false);
       navigate("/chats");
     } catch (error) {
-      toast.error("User does not exists");
+      toast.error("Please fill all the fields");
+      // toast.error("User does not exists");
       // setLoading(false);
     }
 

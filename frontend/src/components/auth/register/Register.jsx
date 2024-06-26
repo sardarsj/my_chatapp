@@ -69,7 +69,7 @@ const Register = () => {
           setLoading(false);
         });
     } else {
-      toast.warning("Please Select an IMage");
+      toast.warning("Please Select an Image");
     }
   };
   //await laana pyega edde lyi
@@ -77,7 +77,7 @@ const Register = () => {
     e.preventDefault();
     // setPicLoading(true);
     if (!name || !email || !password) {
-      toast.warning("Fill all fields");
+      toast.warning("Please fill all the fields");
       setPicLoading(false);
       return;
     }
