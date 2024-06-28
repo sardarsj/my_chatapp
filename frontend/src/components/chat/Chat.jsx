@@ -80,7 +80,7 @@ const Chat = (props) => {
   };
 
   const handleEmoji = (e) => {
-    setText((prev) => prev + e.emoji);
+    setNewMessage((prev) => prev + e.emoji);
     setOpen(false);
   };
 
