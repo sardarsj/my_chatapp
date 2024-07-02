@@ -13,8 +13,8 @@ import io from "socket.io-client";
 import Lottie from "lottie-react";
 import animationData from "../../animations/typing.json";
 import Avatar from "../miscellaneous/Avatar/Avatar";
-import { Effect } from "react-notification-badge";
-import NotificationBadge from "react-notification-badge";
+// import { Effect } from "react-notification-badge";
+// import NotificationBadge from "react-notification-badge";
 
 const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
@@ -222,10 +222,10 @@ const Chat = (props) => {
               onClick={() => setAddbtn((prev) => !prev)}
             />
             <div className="count">
-              <NotificationBadge
+              {/* <NotificationBadge
                 count={notification.length}
                 effect={Effect.SCALE}
-              />
+              /> */}
             </div>
 
             {addbtn && (
