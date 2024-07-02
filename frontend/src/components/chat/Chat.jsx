@@ -13,8 +13,8 @@ import io from "socket.io-client";
 import Lottie from "lottie-react";
 import animationData from "../../animations/typing.json";
 import Avatar from "../miscellaneous/Avatar/Avatar";
-import { Effect } from "react-notification-badge";
-import NotificationBadge from "react-notification-badge";
+// import { Effect } from "react-notification-badge";
+// import NotificationBadge from "react-notification-badge";
 
 const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
@@ -222,10 +222,10 @@ const Chat = (props) => {
               onClick={() => setAddbtn((prev) => !prev)}
             />
             <div className="count">
-              <NotificationBadge
+              {/* <NotificationBadge
                 count={notification.length}
                 effect={Effect.SCALE}
-              />
+              /> */}
             </div>
 
             {addbtn && (
@@ -311,28 +311,3 @@ const Chat = (props) => {
 
 export default Chat;
 
-// <div className="icons">
-//           <img src="./img.png" alt="" />
-//           <img src="./camera.png" alt="" />
-//           <img src="./mic.png" alt="" />
-//         </div>
-//         <input
-//           type="text"
-//           placeholder="Type a message..."
-//           value={newMessage }
-//           // isRequired
-//           // onChange={(e) => setText(e.target.value)}
-//           onChange={typingHandler}
-
-//         />
-// <div className="emoji">
-//   <img
-//     src="./emoji.png"
-//     alt=""
-//     onClick={() => setOpen((prev) => !prev)}
-//   />
-//   <div className="picker">
-//     <EmojiPicker open={open} onEmojiClick={handleEmoji} />
-//   </div>
-// </div>
-// <button className="sendButton" onClick={sendMessage}>Send</button>

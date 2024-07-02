@@ -6,7 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import UserListItem from "../../userAvatar/UserListItem";
 import Avatar from "../Avatar/Avatar";
-import { confirmAlert } from 'react-confirm-alert'; 
+// import { confirmAlert } from 'react-confirm-alert'; 
 
 const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   const [groupChatName, setGroupChatName] = useState();
